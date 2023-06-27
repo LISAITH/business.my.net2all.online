@@ -2,7 +2,6 @@
 
 namespace App\Controller;
 
-use App\Services\AppServices;
 use App\Entity\Type;
 use App\Entity\User;
 use App\Entity\Partenaire;
@@ -20,6 +19,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use App\Services\AppServices;
 
 class PartenaireController extends AuthController
 {   
@@ -58,22 +58,14 @@ class PartenaireController extends AuthController
             $entityManager = $doctrine->getManager();
             $entityManager->persist($partenaire);            
             $entityManager ->flush();
-			
-			$url = $appServices->getBpayServerAddress() . '/create/compte/Bpay/' . $partenaire->getId() . '/' . $type->getId();
-			
-			$data = [
-				'user_id' => $partenaire->getId(),
-				'type_id' => $type->getId()
-			];
 
-			$response = $this->client->request('POST', $url, [
-                'json' => $data,
+            $url = $appServices->getBpayServerAddress() . '/create/compte/Bpay/' . $partenaire->getId() . '/' . $type->getId();
+			$response = $httpClient->request('POST', $url, [
                 'headers' => [
                     'Content-Type: application/json',
                     'Accept' => 'application/json',
                 ]
             ]);
-			
             $content = $response->getContent();
 
             return $this->redirectToRoute("partenaire.index");

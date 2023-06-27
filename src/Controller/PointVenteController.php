@@ -17,6 +17,9 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
+use Symfony\Contracts\HttpClient\HttpClientInterface;
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use App\Services\AppServices;
 
 class PointVenteController extends AuthController
 {
@@ -40,7 +43,7 @@ class PointVenteController extends AuthController
 
 
     #[Route('/point_ventes/create', name: 'point_ventes.create')]
-    public function create(Request $request,ManagerRegistry $doctrine,UserPasswordHasherInterface $userPasswordHasher): Response
+    public function create(Request $request,ManagerRegistry $doctrine,UserPasswordHasherInterface $userPasswordHasher, AppServices $appServices, HttpClientInterface $httpClient): Response
     {   // verifier si l'utilisateur est un partenaire
         if(!$this->checkAuthType()) return $this->forbidden();
         
@@ -52,23 +55,24 @@ class PointVenteController extends AuthController
         $point_vente = new PointVente();
         $point_vente->setUser($user)->setStatus(true);
         $point_vente->setDistributeur($distributeur);
-       
+
         $form = $this->createForm(PointVenteType::class, $point_vente);
         $form->handleRequest($request);
 
-       
-
         if ($form->isSubmitted() && $form->isValid()) {
-
-             
-             $point_vente->getUser()->setPassword($userPasswordHasher->hashPassword(
-                $user,
-                $user->getPassword()
-            ));
-
+            $point_vente->getUser()->setPassword($userPasswordHasher->hashPassword($user,$user->getPassword()));
             $entityManager = $doctrine->getManager();
             $entityManager->persist($point_vente);
             $entityManager ->flush();
+
+            $url = $appServices->getBpayServerAddress() . '/create/compte/Bpay/' . $point_vente->getId() . '/' . $type->getId();
+			$response = $httpClient->request('POST', $url, [
+                'headers' => [
+                    'Content-Type: application/json',
+                    'Accept' => 'application/json',
+                ]
+            ]);
+
             $this -> addFlash("point_vente_add","le point vente  a été créé avec succès");
            
             return $this->redirectToRoute("point_ventes.index");

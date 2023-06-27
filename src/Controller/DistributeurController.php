@@ -16,6 +16,9 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
+use Symfony\Contracts\HttpClient\HttpClientInterface;
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use App\Services\AppServices;
 
 class DistributeurController extends AuthController
 {
@@ -95,13 +98,12 @@ class DistributeurController extends AuthController
     }
 
     #[Route('/distributeurs/create', name: 'distributeurs.create')]
-    public function create(Request $request,ManagerRegistry $doctrine,UserPasswordHasherInterface $userPasswordHasher): Response
+    public function create(Request $request,ManagerRegistry $doctrine,UserPasswordHasherInterface $userPasswordHasher, AppServices $appServices, HttpClientInterface $httpClient): Response
     {
         // verifier si l'utilisateur est un partenaire
         if(!$this->checkAuthType()) return $this->forbidden();
 
         $type = $doctrine->getRepository(Type::class)->find(2);
-      
         $user = new User();
         $user->setType($type)->setStatus(true);
         $distributeur = new Distributeur();
@@ -110,19 +112,20 @@ class DistributeurController extends AuthController
         $form = $this->createForm(DistributeurType::class, $distributeur);
         $form->handleRequest($request);
 
-       
-
         if ($form->isSubmitted() && $form->isValid()) {
-
-             
-            $distributeur->getUser()->setPassword($userPasswordHasher->hashPassword(
-                $user,
-                $user->getPassword()
-            ));
-
+            $distributeur->getUser()->setPassword($userPasswordHasher->hashPassword($user,$user->getPassword()));
             $entityManager = $doctrine->getManager();
             $entityManager->persist($distributeur);
             $entityManager ->flush();
+
+            $url = $appServices->getBpayServerAddress() . '/create/compte/Bpay/' . $distributeur->getId() . '/' . $type->getId();
+			$response = $httpClient->request('POST', $url, [
+                'headers' => [
+                    'Content-Type: application/json',
+                    'Accept' => 'application/json',
+                ]
+            ]);
+            $content = $response->getContent();
            
             return $this->redirectToRoute("distributeurs.index");
         }
@@ -166,12 +169,5 @@ class DistributeurController extends AuthController
             'controller_name' => 'Business',
             'form' => $form->createView()
         ]);
-    }
-
-
-
-
-
-
- 
+    } 
 }
