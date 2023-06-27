@@ -1,0 +1,213 @@
+{% extends 'layouts/index.html.twig' %}
+
+{% block title %}Register{% endblock %}
+
+{% block body %}
+  {# <h1>Register</h1>
+
+    {{ form_start(registrationForm) }}
+        {{ form_row(registrationForm.email) }}
+        {{ form_row(registrationForm.plainPassword, {
+            label: 'Password'
+        }) }}
+        {{ form_row(registrationForm.agreeTerms) }}
+        <button type="submit" class="btn">Register</button>
+    {{ form_end(registrationForm) }}  #}
+<div class="register-box mt-5 ">
+  <div class="card card-outline card-primary">
+    {# <div class="card-header text-center">
+      <h1 >Bussines New</h1>
+    </div> #}
+    <div class="card-body">
+      <p class="login-box-msg">Inscrivez-vous</p>
+      {{ form_start(form, {'method': 'POST'}) }}
+        <div class="input-group mb-3">
+          <div class="input-group-append">
+            <div class="input-group-text">
+              <span class="fas fa-user"></span>
+            </div>
+          </div>
+          <input type="text" name="nom" class="form-control" placeholder="Nom" required>
+           {# {{ form_widget(form.nom)}}
+          <div class="texte-light text-danger mt-0 ">{{ form_errors(form.nom) }} </div> #}
+        </div>
+        <div class="input-group mb-3">
+          <div class="input-group-append">
+            <div class="input-group-text">
+              <span class="fas fa-user"></span>
+            </div>
+          </div>
+          <input type="text" name="prenoms" class="form-control" placeholder="Prenoms" required>
+          {# {{ form_widget(form.prenoms)}}
+          <div class="texte-light text-danger mt-0 ">{{ form_errors(form.prenoms) }} </div> #}
+        </div>
+        <div class="input-group mb-3">
+          <div class="input-group-append">
+            <div class="input-group-text">
+              <span class="fas fa-envelope"></span>
+            </div>
+          </div>
+          {{ form_widget(form.email)}}
+          <div class="texte-light text-danger mt-0 ">{{ form_errors(form.email) }} </div>
+        </div>
+        <div class="input-group mb-3">
+          <div class="input-group-append">
+            <div class="input-group-text">
+              <span class="fas fa-phone"></span>
+            </div>
+          </div>
+           {{ form_widget(form.numero)}}
+           <div class="texte-light text-danger mt-0 ">{{ form_errors(form.numero) }} </div>
+        </div>
+        <div class="input-group mb-3">
+          <div class="input-group-append">
+            <div class="input-group-text">
+              <span class="fas fa-flag"></span>
+            </div>
+          </div>
+            <select class="form-control" name="pays" required>
+                <option value="">Choisir le pays</option>
+                {% for pays in pays_all %}
+                  <option value="{{ pays.getId }}">{{ pays.getLibellePays }} </option>
+                {% endfor %}
+                
+            </select>
+        </div>
+        <div class="input-group mb-3">
+          <div class="input-group-append">
+            <div class="input-group-text">
+              <span class="fas fa-user"></span>
+            </div>
+          </div>
+            <select name="type" id="select_type" class="form-control form-control-lg" aria-label="Type" aria-describedby="basic-addon1" required>
+					            <option value="" disabled selected>Choisir un type de compte</option>
+                      <option value="1">Particulier</option>
+                      <option value="6">Entreprise</option>
+            </select>  
+        </div>
+
+        <div class="input-group mb-3 part">
+          <div class="input-group-append">
+            <div class="input-group-text">
+              <span class="fas fa-user"></span>
+            </div>
+          </div>
+            <select name="genre" id="select_genre" class="form-control form-control-lg" aria-label="Type" aria-describedby="basic-addon1">
+					            <option value="" disabled selected>Choisir votre genre</option>
+                      <option value="m">Masculin</option>
+                      <option value="f">Féminin</option>
+            </select>  
+        </div>  
+
+        <div class="input-group mb-3 entrep">
+          <div class="input-group-append">
+            <div class="input-group-text">
+              <span class="fas fa-user"></span>
+            </div>
+          </div>
+          <input type="text" name="nom_entreprise" class="form-control" placeholder="Nom de l'entreprise">
+        </div>          
+          
+        <div class="input-group mb-3">
+          <div class="input-group-append">
+            <div class="input-group-text">
+              <span class="fas fa-lock"></span>
+            </div>
+          </div>
+          {{ form_widget(form.password)}}
+          <div class="texte-light text-danger mt-0 ">{{ form_errors(form.password) }} </div>
+        </div>
+        <div class="input-group mb-3">
+          <div class="input-group-append">
+            <div class="input-group-text">
+              <span class="fas fa-lock"></span>
+            </div>
+          </div>
+          {{ form_widget(form.plainPassword)}}
+          <div class="texte-light text-danger mt-0 ">{{ form_errors(form.plainPassword) }} </div>
+        </div>
+          <button type="submit" class="btn btn-primary btn-block">S'inscrire</button>
+      {{ form_end(form) }}
+      
+      <p class="mb-1">
+        <a href="" class="text-center">I already have a membership</a>
+      </p>
+      <p class="mb-0">
+        <a href="{{path("app_login")}}" class="text-center">Se Connecter</a>
+      </p>
+    </div>
+    <!-- /.form-box -->
+  </div><!-- /.card -->
+</div> 
+<!-- /.register-box -->
+{% endblock %}
+{% block javascripts %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script>
+$('#select_type').change(function(){
+			if($(this).val()=="6"){
+				$('.part').each(function(){
+					$(this).hide();
+					$(this).find('input').removeAttr('required');
+					$(this).find('select[name="genre"]').removeAttr('required');
+				})
+				$('.entrep').each(function(){
+					$(this).show();
+					$(this).find('input').attr('required','required');
+				})
+			}else if($(this).val()=="1"){
+				$('.part').each(function(){
+					$(this).show();
+					$(this).find('input').attr('required','required');
+					$(this).find('select[name="genre"]').attr('required','required');
+				})
+				$('.entrep').each(function(){
+					$(this).hide();
+					$(this).find('input').removeAttr('required');
+				})
+			}else{
+				$('.part').each(function(){
+					$(this).show();
+					$(this).find('input').attr('required','required');
+					$(this).find('select[name="genre"]').attr('required','required');
+				})
+				$('.entrep').each(function(){
+					$(this).hide();
+					$(this).find('input').removeAttr('required');
+				})
+			}
+	});
+
+	if($('#select_type').val()=="6"){
+		$('.part').each(function(){
+					$(this).hide();
+			        $(this).find('input').removeAttr('required');
+			$(this).find('select[name="genre"]').removeAttr('required');
+				})
+				$('.entrep').each(function(){
+					$(this).show();
+					$(this).find('input').attr('required','required');
+				})
+	}else if($('#type').val()=="1"){
+		$('.part').each(function(){
+					$(this).show();
+			$(this).find('input').attr('required','required');
+			$(this).find('select[name="genre"]').attr('required','required');
+				})
+				$('.entrep').each(function(){
+					$(this).hide();
+					$(this).find('input').removeAttr('required');
+				})
+	}else{
+				$('.part').each(function(){
+					$(this).show();
+					$(this).find('input').attr('required','required');
+					$(this).find('select[name="genre"]').attr('required','required');
+				})
+				$('.entrep').each(function(){
+					$(this).hide();
+					$(this).find('input').removeAttr('required');
+				})
+			}		    
+</script>
+{% endblock %}

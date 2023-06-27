@@ -1,0 +1,270 @@
+{% extends 'base.html.twig' %} {% block title %}
+  Business | Statistiques de prospections
+{% endblock %}
+
+{% block body %}
+  <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-6">
+            <h1>Statistiques de prospections</h1>
+          </div>
+          <div class="col-sm-6">
+            <ol class="breadcrumb float-sm-right">
+              <li class="breadcrumb-item">
+                <a href="#">Accueil</a>
+              </li>
+              <li class="breadcrumb-item active">Statistiques de prospections</li>
+            </ol>
+          </div>
+        </div>
+      </div>
+      <!-- /.container-fluid -->
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+      <div class="container-fluid">
+        <div class="row">
+
+          
+            
+          <div class="col-6">
+
+            <!-- DONUT CHART -->
+            <div class="card card-secondary">
+              <div class="card-header">
+                <h3 class="card-title">Objectif journalier</h3>
+
+                <div class="card-tools">
+                  <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                    <i class="fas fa-minus"></i>
+                  </button>
+                  <button type="button" class="btn btn-tool" data-card-widget="remove">
+                    <i class="fas fa-times"></i>
+                  </button>
+                </div>
+              </div>
+              <div class="card-body">
+                <canvas id="donutChart" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
+              </div>
+              <!-- /.card-body -->
+            </div>
+          
+        
+
+            <!-- /.card -->
+          </div>
+
+          <div class="col-6">
+
+            <!-- DONUT CHART -->
+            <div class="card card-primary">
+              <div class="card-header">
+                <h3 class="card-title">Objectif Hebdomadaire</h3>
+
+                <div class="card-tools">
+                  <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                    <i class="fas fa-minus"></i>
+                  </button>
+                  <button type="button" class="btn btn-tool" data-card-widget="remove">
+                    <i class="fas fa-times"></i>
+                  </button>
+                </div>
+              </div>
+              <div class="card-body">
+                <canvas id="donutChartweek" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
+              </div>
+              <!-- /.card-body -->
+            </div>
+          
+        
+
+            <!-- /.card -->
+          </div>
+
+           <div class="col-6">
+
+            <!-- DONUT CHART -->
+            <div class="card card-success">
+              <div class="card-header">
+                <h3 class="card-title">Objectif mensuel</h3>
+
+                <div class="card-tools">
+                  <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                    <i class="fas fa-minus"></i>
+                  </button>
+                  <button type="button" class="btn btn-tool" data-card-widget="remove">
+                    <i class="fas fa-times"></i>
+                  </button>
+                </div>
+              </div>
+              <div class="card-body">
+                <canvas id="donutChartmounth" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
+              </div>
+              <!-- /.card-body -->
+            </div>
+          
+        
+
+            <!-- /.card -->
+          </div>
+       
+          <!-- /.col -->
+        </div>
+        <!-- /.row -->
+      </div>
+      <!-- /.container-fluid -->
+    </section>
+    <!-- /.content -->
+  </div>
+
+ 
+{% endblock %}
+{% block javascripts %}
+  <script src="{{asset("plugins/chart.js/Chart.min.js")}}"></script>
+<script>
+  $(function () {
+    /* ChartJS
+     * -------
+     * Here we will create a few charts using ChartJS
+     */
+
+    //--------------
+    //- AREA CHART -
+    //--------------
+
+ 
+    
+
+    //-------------
+    //- DONUT CHART -
+    //-------------
+    // Get context with jQuery - using jQuery's .get() method.
+    var donutChartCanvas = $('#donutChart').get(0).getContext('2d')
+    var donutData        = {
+      labels: [
+          'Nombre  de prospections actuel',
+          'Nombre de prospections restant',
+          
+      ],
+      datasets: [
+        {
+          data: [{{prosPerDayNow}},{{prosPerDay}}- {{prosPerDayNow}}],
+          backgroundColor : [ '#00a65a', '#d2d6de'],
+        }
+      ]
+    }
+    var donutOptions     = {
+      maintainAspectRatio : false,
+      responsive : true,
+    }
+    //Create pie or douhnut chart  ['#f56954', '#00a65a', '#f39c12', '#00c0ef', '#3c8dbc', '#d2d6de']
+    // You can switch between pie and douhnut using the method below.
+    new Chart(donutChartCanvas, {
+      type: 'doughnut',
+      data: donutData,
+      options: donutOptions
+    })
+
+   
+  })
+</script>
+<script>
+  $(function () {
+    /* ChartJS
+     * -------
+     * Here we will create a few charts using ChartJS
+     */
+
+    //--------------
+    //- AREA CHART -
+    //--------------
+
+ 
+    
+
+    //-------------
+    //- DONUT CHART -
+    //-------------
+    // Get context with jQuery - using jQuery's .get() method.
+    var donutChartCanvas = $('#donutChartweek').get(0).getContext('2d')
+    var donutData        = {
+      labels: [
+          'Nombre  de prospections actuel',
+          'Nombre de prospections restant',
+          
+      ],
+      datasets: [
+        {
+          data: [{{prosPerWeekNow}},{{prosPerWeek}}- {{prosPerWeekNow}}],
+          backgroundColor : [ '#00a65a', '#d2d6de'],
+        }
+      ]
+    }
+    var donutOptions     = {
+      maintainAspectRatio : false,
+      responsive : true,
+    }
+    //Create pie or douhnut chart  ['#f56954', '#00a65a', '#f39c12', '#00c0ef', '#3c8dbc', '#d2d6de']
+    // You can switch between pie and douhnut using the method below.
+    new Chart(donutChartCanvas, {
+      type: 'doughnut',
+      data: donutData,
+      options: donutOptions
+    })
+
+   
+  })
+</script>
+<script>
+  $(function () {
+    /* ChartJS
+     * -------
+     * Here we will create a few charts using ChartJS
+     */
+
+    //--------------
+    //- AREA CHART -
+    //--------------
+
+ 
+    
+
+    //-------------
+    //- DONUT CHART -
+    //-------------
+    // Get context with jQuery - using jQuery's .get() method.
+    var donutChartCanvas = $('#donutChartmounth').get(0).getContext('2d')
+    var donutData        = {
+      labels: [
+          'Nombre  de prospections actuel',
+          'Nombre de prospections restant',
+          
+      ],
+      datasets: [
+        {
+          data: [{{prosPerMounthNow}},{{prosPerMounth}}- {{prosPerMounthNow}}],
+          backgroundColor : [ '#00a65a', '#d2d6de'],
+        }
+      ]
+    }
+    var donutOptions     = {
+      maintainAspectRatio : false,
+      responsive : true,
+    }
+    //Create pie or douhnut chart  ['#f56954', '#00a65a', '#f39c12', '#00c0ef', '#3c8dbc', '#d2d6de']
+    // You can switch between pie and douhnut using the method below.
+    new Chart(donutChartCanvas, {
+      type: 'doughnut',
+      data: donutData,
+      options: donutOptions
+    })
+
+   
+  })
+</script>
+{% endblock %}

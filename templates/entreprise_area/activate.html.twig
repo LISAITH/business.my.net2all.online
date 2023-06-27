@@ -1,0 +1,112 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+  {{ controller_name ?? "Business" }}
+{% endblock %}
+
+
+ {% block body %}
+  <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-6">
+            <h1>
+                Activer un abonnement
+            </h1>
+          </div>
+          <div class="col-sm-6">
+            <ol class="breadcrumb float-sm-right">
+              <li class="breadcrumb-item">
+                <a href="#">Accueil</a>
+              </li>
+              <li class="breadcrumb-item active">
+                   Activer un abonnement
+              </li>
+            </ol>
+          </div>
+        </div>
+      </div>
+      <!-- /.container-fluid -->
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+      <div class="container-fluid">
+        <div class="row">
+          <!-- left column -->
+          <!-- left column -->
+          <div class="col-md-12">
+            <!-- general form elements -->
+            <div class="card card-secondary">
+              <div class="card-header">
+                <h3 class="card-title">
+                     Choisissez l'ensiegne  puis l' abonnement
+                </h3>
+              </div>
+              <!-- /.card-header -->
+              <!-- form start -->
+              {{ form_start(form, {'method': 'POST'}) }}
+                <div class="card-body row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="exampleInputEmail1">Entreprise</label>
+                            {{ form_widget(form.entreprise,{"attr":{"class":" form-control "}})}}
+                        </div>
+                        <div class="texte-light text-danger mt-0 ">{{ form_errors(form.entreprise) }} </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="exampleInputEmail1">Enseigne</label>
+                            {{ form_widget(form.enseigne,{"attr":{"class":" form-control "}})}}
+                        </div>
+                        <div class="texte-light text-danger mt-0 ">{{ form_errors(form.enseigne) }} </div>
+                    </div>
+                    <div class="col-md-6">
+                            <div class="form-group">
+                            <label for="exampleInputEmail1">Abonnement</label>
+                            {{ form_widget(form.abonnement,{"attr":{"class":" form-control "}})}}
+                        </div>
+                        <div class="texte-light text-danger mt-0 ">{{ form_errors(form.abonnement) }} </div>
+                    </div>
+                </div>
+                <!-- /.card-body -->
+                <div class="card-footer">
+                  <button type="submit" class="btn btn-primary">
+                 
+                     Activer
+                    
+                  </button>
+                </div>
+                {{ form_end(form) }}
+            </div>
+            <!-- /.card -->
+          </div>
+          <!-- /.col (left) -->
+          <!-- right column -->
+          <!-- /.col (right) -->
+        </div>
+        <!-- /.row -->
+      </div>
+      <!-- /.container-fluid -->
+    </section>
+    <!-- /.content -->
+  </div>
+  <!-- /.content-wrapper -->
+<script src="{{ asset('plugins/jquery/jquery.min.js')}}"></script> 
+<script>
+
+
+  $(function () {
+    
+   $('#activation_abonnement_entreprise').on('change', function(e) {
+      let selector = $(this).val();
+  
+      $("#activation_abonnement_enseigne > option").hide();
+      $("#activation_abonnement_enseigne > option").filter(function(){return $(this).data('pub') == selector}).show();
+  });
+  });
+</script>
+{% endblock %}

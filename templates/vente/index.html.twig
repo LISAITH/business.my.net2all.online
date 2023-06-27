@@ -1,0 +1,144 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+  {{ controller_name ?? "Business" }}
+{% endblock %}
+
+{% block sidebar %}
+  {% include "layouts/sidebar/point_vente.html.twig" %}
+{% endblock %}
+
+{% block stylesheets %}
+
+  <!-- DataTables -->
+  <link rel="stylesheet" href=" {{asset('plugins/datatables-bs4/css/dataTables.bootstrap4.min.css')}}">
+  <link rel="stylesheet" href=" {{asset('plugins/datatables-responsive/css/responsive.bootstrap4.min.css')}} ">
+  <link rel="stylesheet" href=" {{asset('plugins/datatables-buttons/css/buttons.bootstrap4.min.css')}}">
+ 
+{% endblock %}
+{% block body %}
+  <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-6">
+            <h1>Tous les formules</h1>
+          </div>
+          <div class="col-sm-6">
+            <ol class="breadcrumb float-sm-right">
+              <li class="breadcrumb-item"><a href="#">Accueil</a></li>
+              <li class="breadcrumb-item active">Tous les formules</li>
+            </ol>
+          </div>
+        </div>
+      </div><!-- /.container-fluid -->
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-12">
+             
+            <div class="card">
+              <div class="card-header">
+                <h3 class="card-title">Tous les formules</h3>
+              </div>
+              <!-- /.card-header -->
+              <div class="card-body">
+               {% if formules != null %}
+                <table id="example1" class="table table-bordered table-striped">
+                  <thead>
+                  <tr>
+                    <th>Nom</th>
+                    <th>Prix</th>
+                    <th class="text-center">Nombre de Services</th>
+                    <th class="text-right">Actions</th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                  {% for formule in formules %}
+                  
+                  <tr>
+                    <td>{{ formule.getNomFormule }}</td>
+                    <td>{{ formule.getPrix|number_format(0, ',', ' ')   }}</td>
+                    <td class="text-center">
+                        
+                          <span class="badge badge-secondary">{{ formule.getServices| length}}</span>
+                         
+                    </td>
+                    <td class="text-right">
+
+                         
+                        <button type="button" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#modal{{formule.getId}}">
+                        voir service
+                        </button>
+                    </td>
+                    <div class="modal fade" id="modal{{formule.getId}}" style="display: none;" aria-hidden="true">
+                      <form action="{{path("formules.service.remove",{id:formule.getId})}}" method="post">
+                      <div class="modal-dialog modal-md">
+                      <div class="modal-content">
+                        <div class="modal-header badge badge-secondary">
+                          <h5 class="modal-title">Voici la liste des services présents dans la formule</h4>
+                          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                          </button>
+                        </div>
+                        <div class="modal-body">
+                          
+                          
+                          {% for  service in formule.getServices %}
+                                 
+
+                                <div class="row border-top border-bottom">
+                                    <div class="row main align-items-center  my-1">
+                                        <div class="col-3"><img class="img-fluid" src="{{ asset(service.getLogo) }}"></div>
+                                        <div class="col">
+                                          
+                                            <div class="row">{{service.getLibelle}}</div>
+                                        </div>
+                                        
+                                    </div>
+                                </div>
+                          {% else %}
+                           <p> Aucun service associé à cette formule </p>
+                          {% endfor %}
+                          
+                        </div>
+                        <div class="modal-footer card-footer text-right py-0">
+                          <button type="button" class="btn btn-default" data-dismiss="modal">fermer</button>
+                        </div>
+                      </div>
+                      <!-- /.modal-content -->
+                    </div>
+                    <!-- /.modal-dialog -->
+                    </form>
+                  </div>
+                  </tr>
+                  {% endfor %}
+                  </tfoot>
+                </table>
+              </div>
+              <!-- /.card-body -->
+            </div>
+            {% else %}
+            <div class="alert alert-warning" role="alert">
+              Aucun Service n'a été ajout
+            </div>
+            {% endif %}
+            <!-- /.card -->
+          </div>
+          <!-- /.col -->
+        </div>
+        <!-- /.row -->
+      </div>
+      <!-- /.container-fluid -->
+    </section>
+    <!-- /.content -->
+  </div>
+
+
+</script>
+{% endblock %}

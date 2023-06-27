@@ -1,0 +1,151 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+  {{ controller_name ?? 'Business' }}
+{% endblock %}
+
+{% block body %}
+  <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-6">
+            <h1>Ajouter un prospect</h1>
+          </div>
+          <div class="col-sm-6">
+            <ol class="breadcrumb float-sm-right">
+              <li class="breadcrumb-item">
+                <a href="#">Accueil</a>
+              </li>
+              <li class="breadcrumb-item active">Ajouter un prospect</li>
+            </ol>
+          </div>
+        </div>
+      </div>
+      <!-- /.container-fluid -->
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+      <div class="container-fluid">
+        <div class="row">
+          <!-- left column -->
+          <div class="col-md-12">
+            <!-- jquery validation -->
+            <div class="card card-secondary">
+              <div class="card-header">
+                <h3 class="card-title"><small>Entrer toutes les informations du prospect</small></h3>
+              </div>
+              <!-- /.card-header -->
+              <!-- form start -->
+              {{ form_start(form) }}
+              <div class="card-body row">
+                <div class="form-group col-md-6">
+                  <label for="exampleInputEmail1">Nom de l'entreprise</label>
+                  <div class="input-group">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text"><i class="fas fa-university"></i></span>
+                    </div>
+                    {{ form_widget(form.entreprise.nom_entreprise) }}
+                  </div>
+                  <div class="texte-light text-danger mt-0">{{ form_errors(form.entreprise.nom_entreprise) }}</div>
+                </div>
+                <div class="form-group col-md-6">
+                  <label for="exampleInputEmail1">Nom de l'enseigne</label>
+                  <div class="input-group">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text"><i class="fas fa-house-user"></i></span>
+                    </div>
+                    {{ form_widget(form.nom_enseigne) }}
+                  </div>
+                  <div class="texte-light text-danger mt-0">{{ form_errors(form.nom_enseigne) }}</div>
+                </div>
+
+                <div class="form-group col-md-6">
+                  <label for="exampleInputEmail1">Nom</label>
+                  <div class="input-group">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text"><i class="fas fa-user"></i></span>
+                    </div>
+                    {{ form_widget(form.entreprise.nom) }}
+                  </div>
+                  <div class="texte-light text-danger mt-0">{{ form_errors(form.entreprise.nom) }}</div>
+                </div>
+                <div class="form-group col-md-6">
+                  <label for="exampleInputEmail1">Prénom(s)</label>
+                  <div class="input-group">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text"><i class="fas fa-user"></i></span>
+                    </div>
+                    {{ form_widget(form.entreprise.prenoms) }}
+                  </div>
+                  <div class="texte-light text-danger mt-0">{{ form_errors(form.entreprise.prenoms) }}</div>
+                </div>
+
+                <div class="form-group col-md-6">
+                  <label for="exampleInputEmail1">Numéro de téléphone</label>
+                  <div class="input-group">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text"><i class="fas fa-phone"></i></span>
+                    </div>
+                    {{ form_widget(form.entreprise.num_tel) }}
+                  </div>
+                  <div class="texte-light text-danger mt-0">{{ form_errors(form.entreprise.num_tel) }}</div>
+                </div>
+
+                <div class="form-group col-md-6">
+                  <label for="exampleInputEmail1">Email</label>
+                  <div class="input-group">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text"><i class="fas fa-envelope"></i></span>
+                    </div>
+                    {{ form_widget(form.entreprise.user.email) }}
+                  </div>
+                  <span class="texte-light text-danger mt-0">{{ form_errors(form.entreprise.user.email) }}</span>
+                </div>
+
+                <div class="form-group col-md-6">
+                  <label for="exampleInputEmail1">Pays</label>
+                  <div class="input-group">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text"><i class="fas fa-flag"></i></span>
+                    </div>
+                    {{ form_widget(form.entreprise.pays,{"attr":{"class":" form-control "}}) }}
+                  </div>
+                  <div class="texte-light text-danger mt-0">{{ form_errors(form.entreprise.pays) }}</div>
+                </div>
+              </div>
+              <!-- /.card-body -->
+              <div class="card-footer">
+                <button type="submit" class="btn btn-primary">Enregistrer</button>
+              </div>
+              {{ form_end(form) }}
+            </div>
+            <!-- /.card -->
+          </div>
+          <!-- /.col (left) -->
+          <!-- right column -->
+          <div class="col-md-6"></div>
+          <!-- /.col (right) -->
+        </div>
+        <!-- /.row -->
+      </div>
+      <!-- /.container-fluid -->
+    </section>
+    <!-- /.content -->
+  </div>
+  <!-- /.content-wrapper -->
+{% endblock %}
+{% block javascripts %}
+  <script>
+    $("#enseigne_entreprise_num_tel").on("input",function() {
+      var vmail=$('#enseigne_entreprise_num_tel').val();
+      vmail=vmail.replace(/\+/g, "");
+      $('#enseigne_entreprise_user_email').val(vmail+"@net2all.online");
+      });
+   
+    </script>
+{% endblock %}
+

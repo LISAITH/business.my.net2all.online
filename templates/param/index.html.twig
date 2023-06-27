@@ -1,0 +1,137 @@
+{% extends 'base.html.twig' %} {% block title %}
+  Business | Listes des Parametres
+{% endblock %}
+
+{% block body %}
+  <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-6">
+            <h1>Parametres de pospections</h1>
+          </div>
+          <div class="col-sm-6">
+            <ol class="breadcrumb float-sm-right">
+              <li class="breadcrumb-item">
+                <a href="#">Accueil</a>
+              </li>
+              <li class="breadcrumb-item active">Parametres de pospections</li>
+            </ol>
+          </div>
+        </div>
+      </div>
+      <!-- /.container-fluid -->
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-12">
+            <div class="card">
+              <div class="card-header d-flex">
+                <h3 class="card-title">Parametres</h3>
+                <div class="ml-auto">
+                  <a href="{{ path('params.create') }}" class="btn btn-primary" role="button">+ Ajouter</a>
+                </div>
+              </div>
+              <!-- /.card-header -->
+              <div class="card-body">
+                {% if params %}
+                  <table id="example1" class="table table-bordered table-striped">
+                    <thead>
+                      <tr>
+                        <th>Libellé</th>
+                        <th>code</th>
+                        <th>Actions</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {% for param in params %}
+                        <tr>
+                          <td>{{ param.getLibelle }}</td>
+                          <td>{{ param.getCode }}</td>
+
+                          <td>
+                            <button type="button" class="btn  btn-primary" data-toggle="modal" data-target="#modal{{ param.getId }}">valeur</button>
+                            <a href="{{ path('params.update', { id: param.getId }) }}" class="btn btn-primary" role="button">Modifier</a>
+                          </td>
+                         
+                        </tr>
+                        
+                      {% endfor %}
+                    </tbody>
+                  </table>
+
+                  <!-- /.card-body -->
+                {% else %}
+                  <div class="alert alert-warning" role="alert">Aucun paramètre</div>
+                {% endif %}
+                <!-- /.card -->
+              </div>
+              <!-- /.col -->
+            </div>
+            <!-- /.row -->
+          </div>
+        </div>
+      </div>
+      <!-- /.container-fluid -->
+    </section>
+    <!-- /.content -->
+  </div>
+  {% for param in params %}
+  
+    <div class="modal fade" id="modal{{ param.getId }}" style="display: none;" aria-hidden="true">
+     
+        <div class="modal-dialog modal-lg">
+          <div class="modal-content">
+            <div class="modal-header badge ">
+              <h5 class="modal-title">Les valeurs du paramètre: {{ param.getLibelle }}</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+            </div>
+            <div class="modal-body">
+              
+              {% if param.getValueProspections %}
+              <table id="example{{ param.getId }}" class="table table-bordered table-striped">
+                <thead>
+                  <tr>
+                    <th>valeur</th>
+                    <th>Date d'application</th>
+
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for valu in param.getValueProspections %}
+                    <tr>
+                      <td>{{ valu.getValue }}</td>
+                      <td>{{ valu.getDoneAt|date('d/m/Y') }}</td>
+
+                      <td>
+                        <a href="{{ path('params.value.update', { id: param.getId, value_id: valu.getId }) }}" class="btn btn-sm btn-primary" role="button">Modifier</a>
+                      </td>
+                    </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            {% endif %}
+             
+            </div>
+            <div class="modal-footer card-footer text-right py-0">
+              <button type="button" class="btn btn-default" data-dismiss="modal">fermer</button>
+              <a href="{{ path('params.value.create', { id: param.getId }) }}" class="btn btn-primary" role="button">Nouvelle valeur</a>
+            </div>
+          </div>
+          <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    
+    </div>
+ 
+{% endfor %}
+{% endblock %}
+{% block javascripts %}
+
+{% endblock %}

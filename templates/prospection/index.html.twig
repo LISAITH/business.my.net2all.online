@@ -1,0 +1,291 @@
+{% extends 'base.html.twig' %} {% block title %}
+  {{ controller_name }}
+{% endblock %}
+
+{% block body %}
+  <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-6">
+            <h1>Toutes mes prospections</h1>
+          </div>
+          <div class="col-sm-6">
+            <ol class="breadcrumb float-sm-right">
+              <li class="breadcrumb-item">
+                <a href="#">Accueil</a>
+              </li>
+              <li class="breadcrumb-item active">Toutes mes prospections</li>
+            </ol>
+          </div>
+        </div>
+      </div>
+      <!-- /.container-fluid -->
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+      <div class="container-fluid">
+        <div class="row">
+
+          
+            
+          <div class="col-12">
+            <div class="card">
+              <div class="card-header">
+                <h3 class="card-title">Toutes mes prospections</h3>
+              </div>
+              <!-- /.card-header -->
+              <div class="card-body">
+                {% if prospections != null %}
+                  <table id="example1" class="table table-bordered table-striped">
+                    <thead>
+                      <tr>
+                        <th>Nom Enseigne</th>
+                        <th>Nom Entreprise</th>
+                        <th>Auteur</th>
+
+                        <th>Potentiel</th>
+                        <th>Etat</th>
+
+                        <th class="text-right">Actions</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {% for prospection in prospections %}
+                        <tr>
+                          <td>{{ prospection.getEnseigne.getNomEnseigne}}</td>
+
+                          <td>{{ prospection.getEntreprise.getNomEntreprise }}</td>
+                          <td>{{ prospection.getParticulier.getNomPrenoms }}</td>
+                          {# <td>
+                            {% if prospection.getEnseigne.getIsValidated %}
+                              <span class="badge badge-success">Activé</span>
+                              {% else %}
+                              <span class="badge badge-secondary">Désactivé</span>
+                              {% endif %}
+                        </td> #}
+                          <td>
+                          {% if prospection.getPotentiel %}
+                              {{prospection.getPotentiel.getLibelle}}
+                           {% else %}
+                              <button class="btn btn-sm btn-dark" data-toggle="modal" data-target="#modal{{ prospection.id }}">indiquer</button>
+                           {% endif %}
+                          </td>
+                          <td>
+                            {% if prospection.isStatus %}
+                              <span class="badge badge-success">Validéé</span>
+                            {% else %}
+                              <span class="badge badge-secondary">En attente</span>
+                            {% endif %}
+                            </td>
+                            
+
+                          <td class="text-right">
+                           
+						   <a href="{{path('prospections.chp', {'id': prospection.getUser.getId ,  'ne': prospection.getEnseigne.getCodeEnseigne})}}" class=" m-1 btn btn-sm btn-primary" role="button">
+						   Générer mot de Passe
+                            </a>
+						   
+							<button class="btn btn-sm btn-success m-1" data-toggle="modal" data-target="#modalD{{ prospection.id }}">Detail</button>
+							
+							
+                            {% if prospection.getEnseigne.getActivationAbonnements == null %}
+                              <a href="{{ path('prospections.client', { id: prospection.getId }) }}" class=" m-1 btn btn-sm btn-primary" role="button">Devenir client</a>
+                            {% endif %}
+                         
+                              
+                            <a href="{{ path('prospections.decouvertes.create', { id: prospection.getId }) }}" class=" m-1 btn btn-sm btn-primary" role="button">
+                            
+                               {% if prospection.getDecouvertes|length >0 %} Fiche  Découverte {% else %} Faire  Découverte {% endif %}
+                            </a>
+                     
+                          </td>
+
+                        <div class="modal fade" id="modal{{ prospection.id }}" style="display: none;" aria-hidden="true">
+                          <form action="{{ path('prospections.potentiels.create', { id: prospection.getId }) }}" method="post">
+                            <div class="modal-dialog modal-md">
+                              <div class="modal-content">
+                                <div class="modal-header badge badge-secondary">
+                                  <h5 class="modal-title">Evaluer le potentiel du client</h5>
+                                  <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                                </div>
+                                <div class="modal-body">
+                                  <p>Quel est le potentiel du prospect ?</p>
+                                  <div class="form-group">
+                                   {% if question %}
+                                      {% for reponse in question.getReponseDecouvertes %}
+                                     
+                                          
+                                        <div class="custom-control custom-radio">
+                                                <input class="custom-control-input" type="radio" id="reponse{{prospection.id}}{{reponse.getId}}" name="reponse{{prospection.id}}" value="{{reponse.getId}}">
+                                                <label for="reponse{{prospection.id}}{{reponse.getId}}" class="custom-control-label">{{reponse.getLibelle}}</label>
+                                        </div>
+                                      
+                            
+                                       {% endfor %}
+                                   {% endif %}
+                                    
+                                  </div>
+                                </div>
+                                <div class="modal-footer card-footer text-right py-0">
+                                  <button type="button" class="btn btn-default" data-dismiss="modal">fermer</button>
+
+                                  <button type="submit" class="btn btn-primary">Soumettre</button>
+                                </div>
+                              </div>
+                              <!-- /.modal-content -->
+                            </div>
+                            <!-- /.modal-dialog -->
+                          </form>
+                        </div>
+						
+						
+						
+						
+						
+						<div class="modal fade" id="modalD{{ prospection.id }}" style="display: none;" aria-hidden="true">
+                          <form action="{{ path('prospections.potentiels.create', { id: prospection.getId }) }}" method="post">
+                            <div class="modal-dialog modal-md">
+                              <div class="modal-content">
+                                <div class="modal-header badge badge-secondary">
+                                  <h5 class="modal-title">Detail</h5>
+                                  <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                                </div>
+                                <div class="modal-body">
+                                  <p>Detail sur le prospect</p>
+                                  <div class="form-group row">
+								  	<div class="col-6"> <label for="" class="control-label"> Nom : </label></div>
+									<div class="col-6"><p>{{ prospection.getEntreprise.getNom }}</p></div>
+                                  </div>
+								  
+								   <div class="form-group row">
+								   <div class="col-6"><label for="" class="control-label"> Prenoms : </label></div>
+									<div class="col-6"><p> {{ prospection.getEntreprise.getPrenoms}}</p></div>
+                                       
+                                  </div>
+								  
+								  <div class="form-group row">
+								  <div class="col-6"><label for="" class="control-label"> Entreprise : </label></div>
+									<div class="col-6"><p> {{ prospection.getEntreprise.getNomEntreprise}}</p></div>
+                                       
+                                  </div>
+								  
+								   <div class="form-group row">
+								   <div class="col-6"><label for="" class="control-label"> Enseigne : </label></div>
+									<div class="col-6"><p> {{ prospection.getEnseigne.getNomEnseigne}}</p></div>
+                                       
+                                  </div>
+								  
+								    <div class="form-group row">
+									<div class="col-6"> <label for="" class="control-label"> Numero de Telephone : </label></div>
+									<div class="col-6"> <p> {{ prospection.getEntreprise.getNumTel}}</p></div>
+                                     
+                                  </div>
+								  
+								  <hr>
+								  <h5 class="mb-2">INFORMATIONS DE CONNEXION</h5>
+								  
+								  <div class="form-group row">
+								  <div class="col-6"><label for="" class="control-label"> Login : </label></div>
+									<div class="col-6"> <p> {{ prospection.getEntreprise.getNumTel}}</p></div>
+                                      
+                                  </div>
+								  
+								  <div class="form-group row">
+								  <div class="col-6"><label for="" class="control-label"> Mot de passe : </label></div>
+									<div class="col-6"><p> {{ prospection.getEnseigne.getCodeEnseigne }} </p></div>
+                                       
+                                  </div>
+								  
+                                </div>
+                                <div class="modal-footer card-footer text-right py-0">
+                                  <button type="button" class="btn btn-default" data-dismiss="modal">fermer</button>
+
+                                  
+                                </div>
+                              </div>
+                              <!-- /.modal-content -->
+                            </div>
+                            <!-- /.modal-dialog -->
+                         
+                        </div>
+						
+						
+
+                        </tr>
+                      {% endfor %}
+                    </tbody>
+                  </table>
+                {% else %}
+                  <div class="alert alert-warning" role="alert">Aucune prospection n'a été ajoutée</div>
+                {% endif %}
+              </div>
+              <!-- /.card-body -->
+            </div>
+
+            <!-- /.card -->
+          </div>
+          <!-- /.col -->
+        </div>
+        <!-- /.row -->
+      </div>
+      <!-- /.container-fluid -->
+    </section>
+    <!-- /.content -->
+  </div>
+
+ 
+{% endblock %}
+{% block javascripts %}
+  <script src="{{asset("plugins/chart.js/Chart.min.js")}}"></script>
+<script>
+  $(function () {
+    /* ChartJS
+     * -------
+     * Here we will create a few charts using ChartJS
+     */
+
+    //--------------
+    //- AREA CHART -
+    //--------------
+
+ 
+    
+
+    //-------------
+    //- DONUT CHART -
+    //-------------
+    // Get context with jQuery - using jQuery's .get() method.
+    var donutChartCanvas = $('#donutChart').get(0).getContext('2d')
+    var donutData        = {
+      labels: [
+          'Taux de prospection actuel',
+          'Taux de prospection',
+          
+      ],
+      datasets: [
+        {
+          data: [2,5],
+          backgroundColor : [ '#00a65a', '#d2d6de'],
+        }
+      ]
+    }
+    var donutOptions     = {
+      maintainAspectRatio : false,
+      responsive : true,
+    }
+    //Create pie or douhnut chart  ['#f56954', '#00a65a', '#f39c12', '#00c0ef', '#3c8dbc', '#d2d6de']
+    // You can switch between pie and douhnut using the method below.
+    new Chart(donutChartCanvas, {
+      type: 'doughnut',
+      data: donutData,
+      options: donutOptions
+    })
+
+   
+  })
+</script>
+{% endblock %}

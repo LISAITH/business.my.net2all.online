@@ -1,0 +1,429 @@
+  <aside class="main-sidebar sidebar-dark-primary elevation-4">
+    <!-- Brand Logo -->
+    <a href="{{ path('app_dashboard')}}" class="brand-link">
+      <img src="{{asset('dist/img/logob.jpeg')}}" alt="Business" class="brand-image img-circle elevation-3" style="opacity: .8">
+      <span class="brand-text font-weight-light">N2A Business </span>
+    </a>
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+      <!-- Sidebar user panel (optional) -->
+      <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+        <div class="image">
+          <img src="{{asset('dist/img/dfault_user.jpeg')}}" class="img-circle elevation-2" alt="User Image">
+        </div>
+        <div class="info">
+          {# <a href="#" class="d-block">Alexander Pierce</a> #}
+          <a href="#" class="d-block">{{app.user.getUsername}}</a>
+        </div>
+      </div>
+
+      <!-- SidebarSearch Form -->
+      {# <div class="form-inline">
+        <div class="input-group" data-widget="sidebar-search">
+          <input class="form-control form-control-sidebar" type="search" placeholder="Search" aria-label="Search">
+          <div class="input-group-append">
+            <button class="btn btn-sidebar">
+              <i class="fas fa-search fa-fw"></i>
+            </button>
+          </div>
+        </div>
+      </div> #}
+
+      <!-- Sidebar Menu -->
+      <nav class="mt-2">
+        <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+          <!-- Add icons to the links using the .nav-icon class
+               with font-awesome or any other icon font library -->
+
+          <li class="nav-item menu-open">
+            <a href="{{ path('app_dashboard')}}" class="nav-link active">
+              <i class="nav-icon fas fa-tachometer-alt"></i>
+              <p>
+                Dashboard
+              </p>
+            </a>
+          </li>
+          {% if app.user.getType.getId==4 %}
+          <li class="nav-item">
+            <a href="{{ path('add_partenaire')}}" class="nav-link" role="button">
+              <i class="nav-icon fas fa-user" style="color:white"></i>
+              <p style="color:white;"> 
+              Ajouter un Partenaire
+              </p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="" class="nav-link">
+              <i class="nav-icon fas fa-plus-square"></i>
+              <p>
+                Partenaires
+                <i class="fas fa-angle-left right"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="{{ path('add_partenaire')}}" class="nav-link">
+                  <i class="fas fa-plus-square nav-icon"></i>
+                  <p>Ajouter un Partenaire</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="{{ path('partenaire.index') }}" class="nav-link">
+                  <i class="fas fa-table nav-icon"></i>
+                  <p>Voir les Partenaires</p>
+                </a>
+              </li>
+
+            </ul>
+          </li>
+          <li class="nav-item">
+            <a href="" class="nav-link">
+              <i class="nav-icon fas fa-blender"></i>
+              <p>
+                Services
+                <i class="right fas fa-angle-left"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="{{  path('add_service') }}" class="nav-link">
+                  <i class="fas fa-plus-square nav-icon"></i>
+                  <p>Ajouter un Service</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="{{  path('app_service') }}" class="nav-link">
+                  <i class="fas fa-table nav-icon"></i>
+                  <p>Voir Tous les Services</p>
+                </a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-item">
+            <a href="" class="nav-link">
+              <i class="nav-icon fas fa-users"></i>
+              <p>
+                Communautés
+                <i class="fas fa-angle-left right"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="{{  path('add_communaute') }}" class="nav-link">
+                  <i class="fas fa-plus-square nav-icon"></i>
+                  <p>Ajouter une communaute</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="{{  path('app_communaute') }}" class="nav-link">
+                  <i class="fas fa-table nav-icon"></i>
+                  <p>Voir  toutes les Communautés</p>
+                </a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-item">
+            <a href="#" class="nav-link">
+              <i class="nav-icon fas fa-edit"></i>
+              <p>
+                 Les formules
+                <i class="fas fa-angle-left right"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="{{path("formules.create")}}"  class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Ajouter une formule</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="{{path("formules.index")}}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Toutes les formules</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="{{path("formules.service.add")}}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Ajouter un service à une formule</p>
+                </a>
+              </li>
+            
+            </ul>
+          </li>
+          <li class="nav-item">
+            <a href="#" class="nav-link">
+              <i class="nav-icon fas fa-edit"></i>
+              <p>
+                 Pays
+                <i class="fas fa-angle-left right"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="{{path("add_pays")}}"  class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Ajouter un Pays</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="{{path("app_pays")}}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Voire les Pays</p>
+                </a>
+              </li>
+            
+            </ul>
+          </li>
+          <li class="nav-item">
+                <a href="{{path("app_enseignes")}}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Toutes les Enseignes</p>
+                </a>
+          </li>
+          <li class="nav-item">
+                <a href="{{path("app_entreprises")}}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Toutes les Entreprises</p>
+                </a>
+          </li>
+          <li class="nav-item">
+                <a href="{{path("app_particuliers")}}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Tous les Particuliers</p>
+                </a>
+          </li>
+           <li class="nav-item">
+            <a href="#" class="nav-link">
+              <i class="nav-icon fas fa-book"></i>
+              <p>
+                Kits
+                <i class="fas fa-angle-left right"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="{{path("kits.create")}}" class="nav-link">
+                  <i class=" far fa-plus-square nav-icon"></i>
+                  <p>Générer des Kits</p> 
+                </a>             
+              </li>
+              <li class="nav-item">
+                <a href="{{path("kits.index")}}" class="nav-link">
+                  <i class="nav-icon fas fa-table"></i>
+                  <p>Tous mes Kits</p>
+                </a>
+              </li>
+             
+            </ul>
+          </li>
+           <li class="nav-item">
+            <a href="#" class="nav-link">
+              <i class="nav-icon fas fa-book"></i>
+              <p>
+                 Propections
+                <i class="fas fa-angle-left right"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+               <li class="nav-item">
+                <a href="{{path("admin.prospections.profile")}}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Tous les Profils</p> 
+                </a>             
+              </li>
+              <li class="nav-item">
+                <a href="{{path("admin.prospections.create")}}" class="nav-link">
+                  <i class=" far fa-plus-square nav-icon"></i>
+                  <p>Ajouter un {{ profil_prospection(5)}}</p> 
+                </a>             
+              </li>
+              <li class="nav-item">
+                <a href="{{path("admin.prospections.index")}}" class="nav-link">
+                  <i class="nav-icon fas fa-table"></i>
+                  <p>Les {{ profil_prospection(5)}}</p>
+                </a>
+              </li>
+               <li class="nav-item">
+                <a href="{{path("params.index")}}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Paramètres </p> 
+                </a>             
+              </li>
+              <li class="nav-item">
+                <a href="{{path("questions.index")}}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Questions de decouverte </p> 
+                </a>             
+              </li>
+             
+            </ul>
+          </li>
+           {% elseif app.user.getType.getId==3  %}
+               {% include "layouts/sidebar/partenaire.html.twig" %}
+          {% elseif app.user.getType.getId==2  %}
+              {% include "layouts/sidebar/distributeur.html.twig" %}
+          {% elseif app.user.getType.getId==5  %}
+               {% include "layouts/sidebar/point_vente.html.twig" %}
+          {% elseif app.user.getType.getId==6  %}
+          <li class="nav-item">
+            <a href="{{ path('add_enseignes')}}" class="nav-link" role="button">
+              <i class="nav-icon fas fa-user" style="color:white"></i>
+              <p style="color:white;"> 
+              Ajouter un Enseigne
+              </p>
+            </a>
+          </li>
+           <li class="nav-item">
+            <a href="#" class="nav-link">
+              <i class="nav-icon fas fa-book"></i>
+              <p>
+                Abonnements
+                <i class="fas fa-angle-left right"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="{{path("entreprise.abonnements.check")}}" class="nav-link">
+                  <i class=" far fa-plus-square nav-icon"></i>
+                  <p>vérifier un abonnement</p> 
+                </a>             
+              </li>
+              <li class="nav-item">
+                <a href="{{path("entreprise.abonnements")}}" class="nav-link">
+                  <i class="nav-icon fas fa-table"></i>
+                  <p>Tous mes abonnements</p>
+                </a>
+              </li>
+             
+            </ul>
+          </li>
+             <li class="nav-item">
+            <a href="#" class="nav-link">
+              <i class="nav-icon fas fa-book"></i>
+              <p>
+                Formules
+                <i class="fas fa-angle-left right"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="{{path("entreprise.souscriptions.create")}}" class="nav-link">
+                  <i class=" far fa-plus-square nav-icon"></i>
+                  <p>souscrire à une formule</p> 
+                </a>              </li>
+              <li class="nav-item">
+                <a href="{{path("entreprise.formules")}}" class="nav-link">
+                  <i class="nav-icon fas fa-table"></i>
+                  <p>Les formules disponibles</p>
+                </a>
+              </li>
+             
+            </ul>
+          </li>
+         
+          <li class="nav-item">
+            <a href="{{ path('entreprise.update')}}" class="nav-link" role="button">
+              <i class="nav-icon fas fa-edit" style="color:white"></i>
+              <p style="color:white;"> 
+              Modifier Entreprise
+              </p>
+            </a>
+          </li>
+
+          {% elseif app.user.getType.getId==1  %}
+          <!-- <li class="nav-item">
+            <a href="{{ path('add_enseignes')}}" class="nav-link" role="button">
+              <i class="nav-icon fas fa-user" style="color:white"></i>
+              <p style="color:white;"> 
+              Ajouter un Enseigne
+              </p>
+            </a>
+          </li> -->
+        {% if profil_check(app.user) %}
+          <li class="nav-item">
+            <a href="#" class="nav-link">
+              <i class="nav-icon fas fa-book"></i>
+              <p>
+                 Propections
+                <i class="fas fa-angle-left right"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+            {% if profil_adder(app.user) %}
+              <li class="nav-item">
+                <a href="{{path("profile.prospections.create")}}" class="nav-link">
+                  <i class=" far fa-plus-square nav-icon"></i>
+                  <p>Attribuer un profil</p> 
+                </a>             
+              </li>
+             
+              <li class="nav-item">
+                <a href="{{path("profile.prospections.index")}}" class="nav-link">
+                  <i class="nav-icon fas fa-table"></i>
+                  <p>Tout mon équipe</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="{{path("profile.prospections.remuneration")}}" class="nav-link">
+                  <i class="nav-icon fas fa-table"></i>
+                  <p>Rémuneration</p>
+                </a>
+              </li>
+              {% endif %}
+                <li class="nav-item">
+                <a href="{{path("prospections.create")}}" class="nav-link">
+                  <i class="nav-icon fas fa-plus"></i>
+                  <p>Ajouter un prospect</p>
+                </a>
+              </li>
+              </li>
+                <li class="nav-item">
+                <a href="{{path("prospections.index")}}" class="nav-link">
+                  <i class="nav-icon fas fa-table"></i>
+                  <p>Toutes mes prospections</p>
+                </a>
+              </li>
+                <li class="nav-item">
+                <a href="{{path("prospections.statistiques")}}" class="nav-link">
+                  <i class="nav-icon fas fa-chart-pie"></i>
+                  <p>Statistiques prospections</p>
+                </a>
+              </li>
+             
+            </ul>
+          </li>
+        {% endif %}
+
+          <li class="nav-item">
+            <a href="{{ path('particuliers.update')}}" class="nav-link" role="button">
+              <i class="nav-icon fas fa-edit" style="color:white"></i>
+              <p style="color:white;"> 
+              Modifier Particulier
+              </p>
+            </a>
+          </li>
+          {% endif %}
+          <li class="nav-header">Plus</li>
+          <li class="nav-item">
+                <a href="{{ path('app_logout')}}" class="nav-link">
+                  <i class="fas fa-sign-out-alt"></i>
+                  {# <span class="fas fa-sign-out-alt"></span> #}
+                  <p>Deconnexion</p>
+                </a>
+          </li>
+         
+        </ul>
+      </nav>
+       {# <a href="{{ path('app_logout')}}" class="btn btn-sm btn-primary ">
+              <i class="nav-icon fas fa-logout"></i>
+              <p>
+                Deconnexion
+              </p>
+            </a> #}
+      <!-- /.sidebar-menu -->
+    </div>
+    <!-- /.sidebar -->
+  </aside>

@@ -1,0 +1,168 @@
+{% extends 'base.html.twig' %}
+{% block title %}
+	{{controller_name}}
+{% endblock %}
+{% block stylesheets %}
+
+	<link
+	rel="stylesheet" href="{{asset('plugins/fontawesome-free/css/all.min.css')}}">
+	<!-- DataTables -->
+	<link rel="stylesheet" href=" {{asset('plugins/datatables-bs4/css/dataTables.bootstrap4.min.css')}}">
+	<link rel="stylesheet" href=" {{asset('plugins/datatables-responsive/css/responsive.bootstrap4.min.css')}} ">
+	<link
+	rel="stylesheet" href=" {{asset('plugins/datatables-buttons/css/buttons.bootstrap4.min.css')}}">
+	<!-- Theme style -->
+	<link rel="stylesheet" href=" {{asset('dist/css/adminlte.min.css')}}">
+{% endblock %}
+{% block body %}
+	<!-- Content Wrapper. Contains page content -->
+	<div
+		class="content-wrapper">
+		<!-- Content Header (Page header) -->
+		<section class="content-header">
+			<div class="container-fluid">
+				<div class="row mb-2">
+					<div class="col-sm-6">
+						<h1>Tous les formules</h1>
+					</div>
+					<div class="col-sm-6">
+						<ol class="breadcrumb float-sm-right">
+							<li class="breadcrumb-item">
+								<a href="#">Accueil</a>
+							</li>
+							<li class="breadcrumb-item active">Tous les formules</li>
+						</ol>
+					</div>
+				</div>
+			</div>
+			<!-- /.container-fluid -->
+		</section>
+
+		<!-- Main content -->
+		<section class="content">
+			<div class="container-fluid">
+				<div class="row">
+					<div class="col-12">
+
+
+						{% for message in app.flashes('formule_status') %}
+							<div class="alert alert-success">
+								{{ message }}
+							</div>
+						{% endfor %}
+						{% for message in app.flashes('service_add') %}
+
+							<div class="alert alert-success">
+								{{ message }}
+							</div>
+						{% endfor %}
+
+						{% for message in app.flashes('formule_edit') %}
+							<div class="alert alert-success">
+								{{ message }}
+							</div>
+						{% endfor %}
+						<div class="card">
+							<div class="card-header">
+								<h3 class="card-title">Tous les formules</h3>
+							</div>
+							<!-- /.card-header -->
+							<div class="card-body">
+								{% if formules != null %}
+									<table id="example1" class="table table-bordered table-striped">
+										<thead>
+											<tr>
+												<th>Nom</th>
+												<th>Prix</th>
+												<th class="text-center">Status</th>
+												<th class="text-right">Actions</th>
+											</tr>
+										</thead>
+										<tbody>
+											{% for formule in formules %}
+
+												<tr>
+													<td>{{ formule.getNomFormule }}</td>
+													<td>{{ formule.getPrix   }}</td>
+													<td class="text-center">
+														{% if formule.isStatus %}
+															<span class="badge badge-success">Activé</span>
+														{% else %}
+															<span class="badge badge-secondary">Désactivé</span>
+														{% endif %}
+													</td>
+													<td class="text-right">
+
+														{% if formule.isStatus %}
+															<a class="btn  btn-sm btn-secondary" href="{{path("formules.status.unvalidate",{id: formule.id})}}">
+																Désactiver
+															</a>
+														{% else %}
+															<a href="{{path("formules.status.validate",{id:formule.id})}}" class="btn btn-sm btn-success">Activer
+															</a>
+														{% endif %}
+														<button type="button" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#modal{{formule.getId}}">
+															voir service
+														</button>
+														<a href="{{path("formules.update",{id:formule.getId})}}" class="btn btn-sm btn-primary" role="button">Modifier</a>
+													</td>
+													<div class="modal fade" id="modal{{formule.getId}}" style="display: none;" aria-hidden="true">
+														<form action="{{path("formules.service.remove",{id:formule.getId})}}" method="post">
+															<div class="modal-dialog modal-md">
+																<div class="modal-content">
+																	<div class="modal-header badge badge-secondary">
+																		<h5 class="modal-title">Voici la liste des services présents dans la formule</h4>
+																		<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+																			<span aria-hidden="true">×</span>
+																		</button>
+																	</div>
+																	<div class="modal-body">
+																		<p>Pour Retirer service cochez-le et Cliquez sur le Bouton "Retirer"</p>
+
+																		{% for  service in formule.getServices %}
+																			<div class="form-group ">
+																				<div class="icheck-primary d-inline">
+																					<input type="checkbox" id="id{{service.getId }}{{formule.getId }}" class="checkbox mr-2" value="{{service.getId }}" name="service{{service.getId }}{{formule.getId }}">
+																					<label for="id{{service.getId }}{{formule.getId }}">
+																						{{service.getLibelle}}
+																					</label>
+																				</div>
+																			</div>
+
+																		{% endfor %}
+
+																	</div>
+																	<div class="modal-footer card-footer text-right py-0">
+																		<button type="button" class="btn btn-default" data-dismiss="modal">fermer</button>
+																		<button type="submit" class="btn btn-primary">Retirer</button>
+																	</div>
+																</div>
+																<!-- /.modal-content -->
+															</div>
+															<!-- /.modal-dialog -->
+														</form>
+													</div>
+												</tr>
+											{% endfor %}
+										</tbody>
+									</tfoot>
+								</table>
+							</div>
+							<!-- /.card-body -->
+						</div>
+					{% else %}
+						<div class="alert alert-warning" role="alert">
+							Aucun Service n'a été ajouté
+						</div>
+					{% endif %}
+					<!-- /.card -->
+				</div>
+				<!-- /.col -->
+			</div>
+			<!-- /.row -->
+		</div>
+		<!-- /.container-fluid -->
+	</section>
+	<!-- /.content -->
+</div></script>{% endblock %}
+{% block javascripts %}{% endblock %}

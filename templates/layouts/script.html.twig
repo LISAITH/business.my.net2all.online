@@ -1,0 +1,123 @@
+
+{# <script src="https://code.jquery.com/jquery-3.6.1.js"></script> #}
+{# <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script> #}
+<script src="{{ asset('plugins/jquery/jquery.min.js')}}"></script>
+<!-- Bootstrap 4 -->
+<script src="{{ asset('plugins/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
+<!-- DataTables  & Plugins -->
+<script src="{{ asset('plugins/datatables/jquery.dataTables.min.js')}} "></script>
+<script src="{{ asset('plugins/datatables-bs4/js/dataTables.bootstrap4.min.js')}}"></script>
+<script src="{{ asset('plugins/datatables-responsive/js/dataTables.responsive.min.js')}}"></script>
+<script src="{{ asset('plugins/datatables-responsive/js/responsive.bootstrap4.min.js')}}"></script>
+<script src="{{ asset('plugins/datatables-buttons/js/dataTables.buttons.min.js')}}"></script>
+<script src="{{ asset('plugins/datatables-buttons/js/buttons.bootstrap4.min.js')}}"></script>
+<script src="{{ asset('plugins/jszip/jszip.min.js')}}"></script>
+<script src="{{ asset('plugins/pdfmake/pdfmake.min.js')}}"></script>
+<script src="{{ asset('plugins/pdfmake/vfs_fonts.js')}}"></script>
+<script src="{{ asset('plugins/datatables-buttons/js/buttons.html5.min.js')}}"></script>
+<script src="{{ asset('plugins/datatables-buttons/js/buttons.print.min.js')}}"></script>
+<script src="{{ asset('plugins/datatables-buttons/js/buttons.colVis.min.js')}}"></script>
+<script src="{{ asset('plugins/sweetalert2/sweetalert2.min.js')}}"></script>
+<script src="{{ asset('plugins/toastr/toastr.min.js')}}"></script>
+<!-- AdminLTE App -->
+<script src="{{ asset('dist/js/adminlte.min.js')}}"></script>
+<!-- AdminLTE for demo purposes -->
+<script src="{{ asset('dist/js/demo.js')}}"></script>
+<!-- Page specific script -->
+<script>
+  {% set currentPath = path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')) %}
+  $(function () {
+
+
+    
+
+
+    $("#example1").DataTable({
+      "responsive": true, "lengthChange": false, "autoWidth": false,
+      "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
+    }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
+    $('#example2').DataTable({
+      "paging": true,
+      "lengthChange": false,
+      "searching": false,
+      "ordering": true,
+      "info": true,
+      "autoWidth": false,
+      "responsive": true,
+    });
+
+  
+
+   
+
+
+    
+      
+    
+  });
+
+</script> 
+  <script>
+        $(function () {
+          var Toast = Swal.mixin({
+              toast: true,
+              position: 'top-end',
+              showConfirmButton: false,
+              timer: 5000
+          });
+          
+
+            {% for message in app.flashes('flash_success') %}
+           
+               Toast.fire({
+                  icon: 'success',
+                  title: '{{ message }}'
+               });
+            {% endfor %}
+            {% for message in app.flashes('flash_error') %}
+              
+               Toast.fire({
+                  icon: 'error',
+                  title: '{{ message }}'
+               });
+            {% endfor %}
+            {% for message in app.flashes('flash_info') %}
+              
+               Toast.fire({
+                  icon: 'info',
+                  title: '{{ message }}'
+               });
+            {% endfor %}
+         
+        });
+    </script>
+    <script>
+        $(function () {
+          var current_href = '{{currentPath}}'
+          $("nav li a").each(function (index) { 
+            $(this).removeClass('active');
+          })
+          $("nav li").removeClass('menu-open')
+
+          $("nav a").each(function (index) {
+            href = $(this).attr('href')
+           
+            if (href == current_href) {
+             
+              $(this).addClass('active')
+
+              var element = $(this).parents('li:eq(1)');
+            element.addClass("menu-open");
+            element.children("a:eq(0)").addClass("active")
+            
+         
+             
+            } else {
+              $(this).removeClass('active')
+              
+            }
+          })
+        })
+    </script>
+
+

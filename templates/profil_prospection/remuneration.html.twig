@@ -1,0 +1,150 @@
+{% extends 'base.html.twig' %} {% block title %}
+  {{ controller_name }}
+{% endblock %}
+{% block stylesheets %}
+  <link rel="stylesheet" href="{{ asset('plugins/fontawesome-free/css/all.min.css') }}" />
+  <!-- DataTables -->
+  <link rel="stylesheet" href=" {{ asset('plugins/datatables-bs4/css/dataTables.bootstrap4.min.css') }}" />
+  <link rel="stylesheet" href=" {{ asset('plugins/datatables-responsive/css/responsive.bootstrap4.min.css') }} " />
+  <link rel="stylesheet" href=" {{ asset('plugins/datatables-buttons/css/buttons.bootstrap4.min.css') }}" />
+  <!-- Theme style -->
+  <link rel="stylesheet" href=" {{ asset('dist/css/adminlte.min.css') }}" />
+{% endblock %}
+{% block body %}
+  <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-6">
+            <h1>Rémunération des commercials</h1>
+          </div>
+          <div class="col-sm-6">
+            <ol class="breadcrumb float-sm-right">
+              <li class="breadcrumb-item">
+                <a href="#">Accueil</a>
+              </li>
+              <li class="breadcrumb-item active">Rémunération des commercials</li>
+            </ol>
+          </div>
+        </div>
+      </div>
+      <!-- /.container-fluid -->
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-12">
+            <div class="card">
+              <div class="card-header d-flex">
+                <h3 class="card-title">Rémunérations</h3>
+                <div class="ml-auto d-flex">
+                     <form class="mr-2" action="{{ path('profile.prospections.remuneration') }}?month={{  current_option != '' ? current_option : moisActifs|keys|first }}" method="post">
+                                  <input type="hidden" name="id" value="" />
+                                  <input type="hidden" name="yearmonth" value="{{ current_option != '' ? current_option : moisActifs|keys|first }}" />
+                                  <button type="submit " class="btn btn-primary">Payer</button>
+                      </form>
+                  <select name="month" onchange="location = this.value;" class="form-control" id="month">
+                    {% for key, mois in moisActifs %}
+                      <option {{ current_option == key ? 'selected' : '' }} value="{{ path('profile.prospections.remuneration') }}?month={{ key }}">{{ mois|date('M Y') }}</option>
+                    {% endfor %}
+                  </select>
+                </div>
+              </div>
+              <!-- /.card-header -->
+              <div class="card-body">
+                {% if particuliers != null %}
+                  <table id="example1" class="table table-bordered table-striped">
+                    <thead>
+                      <tr>
+                        <th>Nom</th>
+                        <th>Prénoms</th>
+                        <th>Prospection mensuel</th>
+                        <th>Prospections suppl.</th>
+                        <th class="text-center">Montant</th>
+                        <th class="text-right">action</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {% for particulier in particuliers %}
+                        <tr class="text-center">
+                          <td>{{ particulier.getNom }}</td>
+                          <td>{{ particulier.getPrenoms }}</td>
+                          <td>{{ (particulier.getId in (tauxProspectionMois|keys) ? tauxProspectionMois[particulier.getId] : 0)|round(1, 'floor') }}%</td>
+                          <td>{{ particulier.getId in (prospectionSupplementaires|keys) ? prospectionSupplementaires[particulier.getId] : 0 }}</td>
+
+                          <td class="text-center">{{ (particulier.getId in (renumerationMensuels|keys) ? renumerationMensuels[particulier.getId] : 0 )|round(1, 'floor')}}</td>
+
+                          <td>
+                            {% if particulier.getId in (renumerationMensuels|keys) %}
+                              {% if particulier.getId in (paieDuMois|keys) %}
+                                <button type="button" data-toggle="modal" data-target="#modal{{ particulier.getId }}" class="btn btn-primary">Paiement</button>
+                                
+
+                                      <div class="modal fade" id="modal{{ particulier.getId }}" style="display: none;" aria-hidden="true">
+                                        <div class="modal-dialog modal-md">
+                                          <div class="modal-content">
+                                            <div class="modal-header badge badge-secondary">
+                                              <h5 class="modal-title">Les informations sur le paiement</h5>
+                                              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                                            </div>
+                                            <div class="modal-body">
+                                              
+                                                {% set mypaie = paieDuMois[particulier.getId] %}
+
+                                                <div>
+                                                
+                                                  Nom du particulier : <b>{{ particulier.getNom }}</b>
+                                                  <hr />Prénoms du particulier: <b>{{ particulier.getPrenoms }}</b>
+                                                  <hr />Montant:  <b>{{ mypaie.getMontant }}</b>
+                                                  <hr />Date du paiement:  <b>{{ mypaie.getDoneAt|date('d/m/Y H:i:s') }}</b>
+                                                  
+                                                </div>
+                                                {% set mypaie = null %}
+                                            
+                                            </div>
+                                            <div class="modal-footer card-footer text-right py-0">
+                                              <button type="button" class="btn btn-default" data-dismiss="modal">fermer</button>
+                                            </div>
+                                          </div>
+                                          <!-- /.modal-content -->
+                                      </div>
+
+
+                              {% else %}
+                                <form action="{{ path('profile.prospections.remuneration') }}?month={{  current_option != '' ? current_option : moisActifs|keys|first }}" method="post">
+                                  <input type="hidden" name="id" value="{{ particulier.getId }}" />
+                                  <input type="hidden" name="yearmonth" value="{{ current_option != '' ? current_option : moisActifs|keys|first }}" />
+                                  <button type="submit" class="btn btn-primary">Payer</button>
+                                </form>
+                              {% endif %}
+                            {% endif %}
+                          </td>
+                        </tr>
+                      {% endfor %}
+                    </tbody>
+                  </table>
+                {% else %}
+                  <div class="alert alert-warning" role="alert">Votre équipe de prospection est vide</div>
+                {% endif %}
+              </div>
+              <!-- /.card-body -->
+            </div>
+
+            <!-- /.card -->
+          </div>
+          <!-- /.col -->
+        </div>
+        <!-- /.row -->
+      </div>
+      <!-- /.container-fluid -->
+    </section>
+    <!-- /.content -->
+  </div>
+{% endblock %}
+{% block javascripts %}
+
+{% endblock %}

@@ -1,0 +1,164 @@
+<!-- Sidebar Menu -->
+      <nav class="mt-2">
+        <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+          <!-- Add icons to the links using the .nav-icon class
+               with font-awesome or any other icon font library -->
+
+          <li class="nav-item menu-open">
+            <a href="{{ path('app_dashboard')}}" class="nav-link active">
+              <i class="nav-icon fas fa-tachometer-alt"></i>
+              <p>
+                Dashboard
+              </p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="{{ path('add_partenaire')}}" class="nav-link" role="button">
+              <i class="nav-icon fas fa-plus" style="color:white"></i>
+              <p style="color:white;"> 
+              Ajouter un Partenaire
+              </p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="" class="nav-link">
+              <i class="nav-icon fas fa-copy"></i>
+              <p>
+                Partenaires
+                <i class="fas fa-angle-left right"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="{{ path('add_partenaire')}}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Ajouter un Partenaire</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="{{ path('partenaire.index') }}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Voir les Partenaires</p>
+                </a>
+              </li>
+
+            </ul>
+          </li>
+          <li class="nav-item">
+            <a href="" class="nav-link">
+              <i class="nav-icon fas fa-chart-pie"></i>
+              <p>
+                Services
+                <i class="right fas fa-angle-left"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="{{  path('add_service') }}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Ajouter un Service</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="{{  path('app_service') }}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Voir Tous les Services</p>
+                </a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-item">
+            <a href="" class="nav-link">
+              <i class="nav-icon fas fa-tree"></i>
+              <p>
+                Communautés
+                <i class="fas fa-angle-left right"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="{{  path('add_communaute') }}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Ajouter une communaute</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="{{  path('app_communaute') }}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Voir  toutes les Communautés</p>
+                </a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-item">
+            <a href="#" class="nav-link">
+              <i class="nav-icon fas fa-edit"></i>
+              <p>
+                 Les formules
+                <i class="fas fa-angle-left right"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="{{path("formules.create")}}"  class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Ajouter une formule</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="{{path("formules.index")}}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Toutes les formules</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="{{path("formules.service.add")}}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Ajouter un service à une formule</p>
+                </a>
+              </li>
+            
+            </ul>
+          </li>
+         
+          <li class="nav-item">
+            <a href="#" class="nav-link">
+              <i class="nav-icon fas fa-edit"></i>
+              <p>
+                 Pays
+                <i class="fas fa-angle-left right"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="{{path("add_pays")}}"  class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Ajouter un Pays</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="{{path("app_pays")}}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Voire les Pays</p>
+                </a>
+              </li>
+            
+            </ul>
+          </li>
+          <li class="nav-item">
+                <a href="{{path("app_enseignes")}}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Toutes les Enseignes</p>
+                </a>
+          </li>
+          <li class="nav-item">
+                <a href="{{path("app_entreprises")}}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Toutes les Entreprises</p>
+                </a>
+              </li>
+          {# <li class="nav-header">Plus</li> #}
+        
+        </ul>
+      </nav>
+      <!-- /.sidebar-menu -->

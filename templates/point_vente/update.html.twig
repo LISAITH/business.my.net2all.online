@@ -1,0 +1,101 @@
+{% extends 'base.html.twig' %} 
+
+{% block title %}
+  {{ controller_name ?? "Business" }}
+{% endblock %}
+
+{% block sidebar %}
+  {% include "layouts/sidebar/distributeur.html.twig" %}
+{% endblock %}
+
+{% block body %}
+  <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-6">
+            <h1>Modifier un point de vente</h1>
+          </div>
+          <div class="col-sm-6">
+            <ol class="breadcrumb float-sm-right">
+              <li class="breadcrumb-item">
+                <a href="#">Accueil</a>
+              </li>
+              <li class="breadcrumb-item active">Modifier un point de vente</li>
+            </ol>
+          </div>
+        </div>
+      </div>
+      <!-- /.container-fluid -->
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+      <div class="container-fluid">
+        <div class="row">
+          <!-- left column -->
+          <div class="col-md-12">
+            <!-- jquery validation -->
+            <div class="card card-secondary">
+              <div class="card-header">
+                <h3 class="card-title"> <small>Entrer les informations à modifier du point de vente</small></h3>
+              </div>
+              <!-- /.card-header -->
+              <!-- form start -->
+              {{ form_start(form) }}
+                <div class="card-body row">
+                    
+                
+                  
+                    <div class="form-group col-md-6">
+                      <label for="exampleInputEmail1">Nom</label>
+                      <div class="input-group ">
+                        <div class="input-group-prepend">
+                          <span class="input-group-text"><i class="fas fa-user"></i></span>
+                        </div>
+                        {{ form_widget(form.nom_point_vente,{"attr":{"class":" form-control "}})}}
+                        
+                      </div>
+                      <div class="texte-light text-danger mt-0 ">{{ form_errors(form.nom_point_vente) }} </div>
+                      
+                    </div>
+                    <div class="form-group col-md-6">
+                      <label for="exampleInputEmail1">Type</label>
+                      <div class="input-group ">
+                        <div class="input-group-prepend">
+                          <span class="input-group-text"><i class="fas fa-pen"></i></span>
+                        </div>
+                        {{ form_widget(form.type,{"attr":{"class":" form-control "}})}}
+                        
+                      </div>
+                      <div class="texte-light text-danger mt-0 ">{{ form_errors(form.type) }} </div>
+                      
+                    </div>
+
+           
+                  
+                  
+                </div>
+                <!-- /.card-body -->
+                <div class="card-footer">
+                  <button type="submit" class="btn btn-primary">Modifier</button>
+                </div>
+            {{ form_end(form) }}
+            </div>
+            <!-- /.card -->
+          </div>
+          <!-- /.col (left) -->
+          <!-- right column -->
+          <div class="col-md-6"></div>
+          <!-- /.col (right) -->
+        </div>
+        <!-- /.row -->
+      </div>
+      <!-- /.container-fluid -->
+    </section>
+    <!-- /.content -->
+  </div>
+  <!-- /.content-wrapper -->
+{% endblock %}

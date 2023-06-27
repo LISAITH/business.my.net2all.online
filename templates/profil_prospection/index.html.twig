@@ -1,0 +1,109 @@
+{% extends 'base.html.twig' %} {% block title %}
+  {{ controller_name }}
+{% endblock %} 
+{% block stylesheets %}
+
+  <link rel="stylesheet" href="{{asset('plugins/fontawesome-free/css/all.min.css')}}">
+  <!-- DataTables -->
+  <link rel="stylesheet" href=" {{asset('plugins/datatables-bs4/css/dataTables.bootstrap4.min.css')}}">
+  <link rel="stylesheet" href=" {{asset('plugins/datatables-responsive/css/responsive.bootstrap4.min.css')}} ">
+  <link rel="stylesheet" href=" {{asset('plugins/datatables-buttons/css/buttons.bootstrap4.min.css')}}">
+  <!-- Theme style -->
+  <link rel="stylesheet" href=" {{asset('dist/css/adminlte.min.css')}}">
+{% endblock %}
+{% block body %}
+  <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-6">
+            <h1>Mon équipe de prospection </h1>
+          </div>
+          <div class="col-sm-6">
+            <ol class="breadcrumb float-sm-right">
+              <li class="breadcrumb-item"><a href="#">Accueil</a></li>
+              <li class="breadcrumb-item active">Mon équipe de prospection</li>
+            </ol>
+          </div>
+        </div>
+      </div><!-- /.container-fluid -->
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-12">
+            <div class="card">
+              <div class="card-header">
+                <h3 class="card-title">Mon équipe de prospection</h3>
+                
+              </div>
+              <!-- /.card-header -->
+              <div class="card-body">
+               {% if particuliers!=null %}
+                <table id="example1" class="table table-bordered table-striped">
+                  <thead>
+                  <tr>
+                    <th>Nom</th>
+                    <th>Prénoms</th>
+                    <th>Email</th>
+                     <th>Profil</th>
+                    <th class="text-center">Progression</th>
+                    <th class="text-right">action</th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                  {% for particulier in particuliers %}
+                  <tr class="text-center">
+                    <td>{{ particulier.getNom }}</td>
+                    <td>{{ particulier.getPrenoms }} </td>
+                    <td>{{ particulier.getUser.getEmail }} </td>
+                     <td>{{ particulier.getProfilLibelle ?? "inconnu"}}</td>
+                 
+                    <td class="text-center">
+                        <div class="progress">
+                       
+                          <div class="progress-bar bg-primary progress-bar-striped" role="progressbar"
+                           aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" 
+                            style="width: {{particulier.getId in tauxProspectionJours|keys ? tauxProspectionJours[particulier.getId]:0}}%">
+                            <span class="sr-only">40% Complete (success)</span>
+                          </div>
+                        </div>
+                    </td>
+                            
+                    <td> 
+                      <a href="{{ path('prospections.particulier',{ id:particulier.getId }) }}" class="btn btn-sm btn-primary" role="button">
+                        Prospections
+                      </a>
+                    </td>
+                  
+                  </tr>
+                  {% endfor %}
+                  </tfoot>
+                </table>
+              </div>
+              <!-- /.card-body -->
+            </div>
+            {% else %}
+            <div class="alert alert-warning" role="alert">
+              Votre équipe de prospection  est vide
+            </div>
+            {% endif %}
+            <!-- /.card -->
+          </div>
+          <!-- /.col -->
+        </div>
+        <!-- /.row -->
+      </div>
+      <!-- /.container-fluid -->
+    </section>
+    <!-- /.content -->
+  </div>
+
+{% endblock %}
+{% block javascripts %}
+     
+{% endblock %}

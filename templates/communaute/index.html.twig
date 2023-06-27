@@ -1,0 +1,197 @@
+{% extends 'base.html.twig' %} {% block title %}
+  Listes des Services
+{% endblock %} 
+{% block stylesheets %}
+
+  <link rel="stylesheet" href="{{asset('plugins/fontawesome-free/css/all.min.css')}}">
+  <!-- DataTables -->
+  <link rel="stylesheet" href=" {{asset('plugins/datatables-bs4/css/dataTables.bootstrap4.min.css')}}">
+  <link rel="stylesheet" href=" {{asset('plugins/datatables-responsive/css/responsive.bootstrap4.min.css')}} ">
+  <link rel="stylesheet" href=" {{asset('plugins/datatables-buttons/css/buttons.bootstrap4.min.css')}}">
+  <!-- Theme style -->
+  <link rel="stylesheet" href=" {{asset('dist/css/adminlte.min.css')}}">
+{% endblock %}
+{% block body %}
+  <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-6">
+            <h1>Tous les Communautés</h1>
+          </div>
+          <div class="col-sm-6">
+            <ol class="breadcrumb float-sm-right">
+              <li class="breadcrumb-item"><a href="#">Accueil</a></li>
+              <li class="breadcrumb-item active">Tous les Communautés</li>
+            </ol>
+          </div>
+        </div>
+      </div><!-- /.container-fluid -->
+    </section>
+
+    <!-- Main content -->
+    {# <section class="content">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-12">
+            <div class="card">
+              <div class="card-header">
+                <h3 class="card-title">Tous les Communautés</h3>
+              </div>
+              <div class="card-body">
+               {% if communaute!=null %}
+                <table id="example1" class="table table-bordered table-striped">
+                  <thead>
+                  <tr>
+                    <th>Nom</th>
+                    <th>Image</th>
+                    <th>Actions</th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                  {% for communautes in communaute %}
+                  
+                  <tr>
+                    <td>{{ communautes.getLibelle }}</td>
+                    <td>
+                      <a>
+                      <img  src="{{ asset(communautes.getLogo ?? 'ImageService/cashline.jpeg')  }}"  alt="{{ communautes.getLogo }}"  class= "rounded-circle" width="75" />
+                      </a>
+                   </td>
+                    <td>
+                        <a href="{{path("communaute.update",{id:communautes.getId})}}" class="btn btn-primary" role="button">Modifier</a>
+                    </td>
+                  </tr>
+                  {% endfor %}
+                  </tfoot>
+                </table>
+              </div>
+
+            </div>
+            {% else %}
+            <div class="alert alert-warning" role="alert">
+              Aucun Service n'a été ajouté 
+            </div>
+            {% endif %}
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </section> #}
+
+    <section class="content">
+        <div class="container-fluid">
+            <div class="card card-default color-palette-box">
+                <div class="card-header">
+                    <h3 class="card-title">
+                    <i class="fas fa-tag"></i>
+                        Tous les Communautés
+                    </h3>
+                </div>
+                <div class="row" style="padding:15px">
+                {% for communautes in communaute %}
+                    <!-- /.col (left) -->
+                    <div class="col-md-6" >
+                        <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title"><i class="fa fa-globe" aria-hidden="true"></i> {{ communautes.getLibelle }}</h3>
+                        </div>
+                        <!-- /.card-header -->
+                        <div class="card-body text-center"  >
+                            <p>{{ communautes.getDescription  }} </p>
+                            <div>
+                            <a href="#" target="_blank">  <img src="{{ asset(communautes.getLogo ?? 'ImageService/cashline.jpeg')  }}"width=100%/></a>
+                            </div>
+                        </div>
+                        <!-- /.card-body -->
+                        </div>
+                        <!-- /.card -->
+                    </div>
+                {% endfor %}
+            </div>
+            {# <div class="block-body row">
+              <div class="col-12">
+                    <div class="card">
+                        <div class="header">
+                            <h4>
+                               Ensemble d'acteurs intervenant dans le meme secteur d'activité
+                            </h4>
+                            <ul class="header-dropdown m-r--5">
+                                <li>
+                                    <a href="javascript:void(0);">
+                                        <i class="material-icons">mic</i>
+                                    </a>
+                                </li>
+                                <li class="dropdown">
+                                    <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                                        <i class="material-icons">more_vert</i>
+                                    </a>
+                                    <ul class="dropdown-menu pull-right">
+                                        <li><a href="javascript:void(0);">Action</a></li>
+                                        <li><a href="javascript:void(0);">Another action</a></li>
+                                        <li><a href="javascript:void(0);">Something else here</a></li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="body" style="min-height:400px">
+
+                         <div class="row clearfix">
+                  <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                    <div class="card">
+                        <div class="header">
+                            <h2>
+                                   <i class="fa fa-globe" aria-hidden="true"></i>  KhaMELIA <small>Plateforme Universelle de Collaboration Médicale.</small>
+                            </h2>
+                            <ul class="header-dropdown m-r--5">
+                                <li>
+                                
+                                </li>
+                                <li class="dropdown">
+                                   
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="body">
+                           <img src="https://business.n2a.online/assets_site/img/khamelia.jpg" width="100%" height="200px" />
+                        </div>
+                    </div>
+                </div>
+                 <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                    <div class="card">
+                        <div class="header">
+                            <h2>
+                                <i class="fa fa-globe" aria-hidden="true"></i>
+                                InetSCHOOLS <small>Plateforme Universelle de Collaboration Scolaire.</small>
+                            </h2>
+                            <ul class="header-dropdown m-r--5">
+                                <li>
+                                
+                                </li>
+                                <li class="dropdown">
+                                   
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="body">
+                           <img src="https://business.n2a.online/assets_site/img/inetschools.jpg" width="100%" height="200px" />
+                        </div>
+                    </div>
+                </div>
+              
+            </div> #}
+        </div>
+    </section>
+    <!-- /.content -->
+  </div>
+
+</script>
+{% endblock %}
+{% block javascripts %}
+    
+{% endblock %}

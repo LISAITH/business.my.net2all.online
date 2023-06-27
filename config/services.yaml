@@ -1,0 +1,46 @@
+# This file is the entry point to configure your own services.
+# Files in the packages/ subdirectory configure your dependencies.
+
+# Put parameters here that don't need to change on each machine where the app is deployed
+# https://symfony.com/doc/current/best_practices.html#use-parameters-for-application-configuration
+parameters:
+    enseignes_directory: '%kernel.project_dir%/public/uploads/enseignes'
+    default_directory: '%kernel.project_dir%/public/uploads/unknown'
+    profile_directory: '%kernel.project_dir%/public/uploads/profiles'
+    API_URL : 'http://127.0.0.1:8000/index.php/api/'
+    #  API_URL : 'https://business.net2all.net/index.php/api/'
+
+services:
+    
+    # default configuration for services in *this* file
+    _defaults:
+        autowire: true      # Automatically injects dependencies in your services.
+        autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
+
+    # makes classes in src/ available to be used as services
+    # this creates a service per class whose id is the fully-qualified class name
+    App\:
+        resource: '../src/'
+        exclude:
+            - '../src/DependencyInjection/'
+            - '../src/Entity/'
+            - '../src/Kernel.php'
+
+    # add more service definitions when explicit configuration is needed
+    # please note that last definitions always *replace* previous ones
+
+    # acme_api.event.jwt_decoded_listener:
+    #     class: App\EventListener\JWTDecodedListener
+    #     arguments: ['@request_stack']
+    #     tags:
+    #         - { name: kernel.event_listener, event: lexik_jwt_authentication.on_jwt_decoded, method: onJWTDecoded }
+    acme_api.event.jwt_created_listener:
+        class: App\EventListeners\JWTListener
+        arguments: [ '@request_stack' ]
+        tags:
+            - { name: kernel.event_listener, event: lexik_jwt_authentication.on_jwt_created, method: onJWTCreated }
+
+    acme_api.event.authentication_success_listener:
+        class: App\EventListeners\JWTListener
+        tags:
+            - { name: kernel.event_listener, event: lexik_jwt_authentication.on_authentication_success, method: onAuthenticationSuccessResponse }

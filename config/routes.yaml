@@ -1,0 +1,21 @@
+#index:
+#    path: /
+#    controller: App\Controller\DefaultController::index
+# authentication_token:
+#     path: /api/login
+#     methods: ['POST']
+# enseignes_by_user:
+#     path: /enseignes/users/{id}
+#     methods: ['POST']
+#     defaults:
+#         _controller: App\Controller\EnseigneController::getEnseignes
+#         _api_resource_class: App\Entity\Enseigne
+#         _api_item_operation_name: post_enseignes
+
+controllers:
+    resource: ../src/Controller/
+    type: annotation
+
+kernel:
+    resource: ../src/Kernel.php
+    type: annotation

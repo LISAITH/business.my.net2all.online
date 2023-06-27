@@ -1,0 +1,123 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+  {{ controller_name ?? "Business" }}
+{% endblock %}
+
+{% block sidebar %}
+  {% include "layouts/sidebar/point_vente.html.twig" %}
+{% endblock %}
+
+{% block body %}
+	<!-- Content Wrapper. Contains page content -->
+	<div
+		class="content-wrapper">
+		<!-- Content Header (Page header) -->
+		<section class="content-header">
+			<div class="container-fluid">
+				<div class="row mb-2">
+					<div class="col-sm-6">
+						<h1>Souscrire à une formule</h1>
+
+
+					</div>
+					<div class="col-sm-6">
+						<ol class="breadcrumb float-sm-right">
+							<li class="breadcrumb-item">
+								<a href="#">Accueil</a>
+							</li>
+							<li class="breadcrumb-item active">Souscrire à une formule</li>
+
+						</ol>
+					</div>
+				</div>
+			</div>
+			<!-- /.container-fluid -->
+		</section>
+
+		<!-- Main content -->
+		<section class="content">
+			<div class="container-fluid">
+
+				<div
+					class="row">
+					<!-- left column -->
+					<div
+						class="col-md-12">
+						<!-- jquery validation -->
+						<div class="card card-secondary">
+							<div class="card-header">
+								<h3 class="card-title">
+									<small>Souscription</small>
+
+
+								</h3>
+							</div>
+							<!-- /.card-header -->
+							<!-- form start -->
+							{{ form_start(form) }}
+
+							<div class="card-body row">
+
+								<div class="form-group col-md-6">
+									<label for="exampleInputEmail1">Enseignes</label>
+
+
+									<div class="input-group-prepend">
+										<span class="input-group-text">
+											<i class="fas fa-pen"></i>
+										</span>
+										{{ form_widget(form.enseigne,{"attr":{"class":" form-control "}})}}
+
+
+									</div>
+									<div class="texte-light text-danger mt-0 ">{{ form_errors(form.enseigne) }}
+
+
+									</div>
+
+								</div>
+
+
+								<div class="form-group col-md-6">
+									<label for="exampleInputEmail1">Formules</label>
+
+									<div class="input-group-prepend">
+										<span class="input-group-text">
+											<i class="fas fa-pen"></i>
+										</span>
+										{{ form_widget(form.formule,{"attr":{"class":" form-control "}})}}
+
+									</div>
+
+									<div class="texte-light text-danger mt-0 ">{{ form_errors(form.formule) }}
+
+									</div>
+
+
+								</div>
+								<!-- /.card -->
+								<div class="card-footer row ">
+
+									<button type="submit" class="btn btn-primary mr-md-3">Souscrire</button>
+
+
+									<button type="reset" class="btn btn-dark">Réinitialiser</button>
+
+								</div>
+								{{ form_end(form) }}
+
+							</div>
+							<!-- /.col (left) -->
+							<!-- right column -->
+							<div class="col-md-6"></div>
+							<!-- /.col (right) -->
+						</div>
+						<!-- /.row -->
+					</div>
+					<!-- /.container-fluid -->
+				</section>
+				<!-- /.content -->
+			</div>
+			<!-- /.content-wrapper -->
+		{% endblock %}

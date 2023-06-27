@@ -1,0 +1,98 @@
+{% extends 'base.html.twig' %} {% block title %}
+  {{ controller_name }}
+{% endblock %} 
+{% block stylesheets %}
+
+  <link rel="stylesheet" href="{{asset('plugins/fontawesome-free/css/all.min.css')}}">
+  <!-- DataTables -->
+  <link rel="stylesheet" href=" {{asset('plugins/datatables-bs4/css/dataTables.bootstrap4.min.css')}}">
+  <link rel="stylesheet" href=" {{asset('plugins/datatables-responsive/css/responsive.bootstrap4.min.css')}} ">
+  <link rel="stylesheet" href=" {{asset('plugins/datatables-buttons/css/buttons.bootstrap4.min.css')}}">
+  <!-- Theme style -->
+  <link rel="stylesheet" href=" {{asset('dist/css/adminlte.min.css')}}">
+{% endblock %}
+{% block body %}
+  <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-6">
+            <h1>Tous les {{profil}}</h1>
+          </div>
+          <div class="col-sm-6">
+            <ol class="breadcrumb float-sm-right">
+              <li class="breadcrumb-item"><a href="#">Accueil</a></li>
+              <li class="breadcrumb-item active">Tous les {{profil}}</li>
+            </ol>
+          </div>
+        </div>
+      </div><!-- /.container-fluid -->
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-12">
+            <div class="card">
+              <div class="card-header">
+                <h3 class="card-title">Tous les {{profil}}</h3>
+                
+              </div>
+              <!-- /.card-header -->
+              <div class="card-body">
+               {% if particuliers!=null %}
+                <table id="example1" class="table table-bordered table-striped">
+                  <thead>
+                  <tr>
+                    <th>Nom</th>
+                    <th>Prénoms</th>
+                    <th>Email</th>
+                    <th class="text-center">Etat du Particulier</th>
+                    <th class="text-right">Actions</th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                  {% for particulier in particuliers %}
+                  <tr class="text-center">
+                    <td>{{ particulier.getNom }}</td>
+                    <td>{{ particulier.getPrenoms }} </td>
+                    <td>{{ particulier.getUser.getEmail }} </td>
+                    <td>
+                          {% if particulier.getUser.isStatus %}
+                          <span class="badge badge-success">Activé</span>
+                          {% else %}
+                          <span class="badge badge-secondary">Désactivé</span>
+                          {% endif %}
+                    </td>
+                    <td class="text-right">Actions</td>
+                  
+                  </tr>
+                  {% endfor %}
+                  </tfoot>
+                </table>
+              </div>
+              <!-- /.card-body -->
+            </div>
+            {% else %}
+            <div class="alert alert-warning" role="alert">
+              Aucun {{profil}} n'a été ajouté 
+            </div>
+            {% endif %}
+            <!-- /.card -->
+          </div>
+          <!-- /.col -->
+        </div>
+        <!-- /.row -->
+      </div>
+      <!-- /.container-fluid -->
+    </section>
+    <!-- /.content -->
+  </div>
+
+{% endblock %}
+{% block javascripts %}
+     
+{% endblock %}

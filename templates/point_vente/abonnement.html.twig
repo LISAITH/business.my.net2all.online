@@ -1,0 +1,132 @@
+{% extends 'base.html.twig' %} 
+
+{% block title %}
+  {{ controller_name ?? "Business" }}
+{% endblock %}
+
+{% block sidebar %}
+  {% include "layouts/sidebar/distributeur.html.twig" %}
+{% endblock %}
+
+{% block body %}
+  <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-6">
+            <h1>Tous Mes Abonnements</h1>
+          </div>
+          <div class="col-sm-6">
+            <ol class="breadcrumb float-sm-right">
+              <li class="breadcrumb-item">
+                <a href="#">Accueil</a>
+              </li>
+              <li class="breadcrumb-item active">Tous Mes Abonnements
+            </ol>
+          </div>
+        </div>
+      </div>
+      <!-- /.container-fluid -->
+    </section>
+     
+    <!-- Main content -->
+    <section class="content">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-12">
+            
+             {% for message in app.flashes('abonnement_add') %}
+                <div class="alert alert-success">
+                    {{ message }}
+                </div>
+              {% endfor %}
+
+            <div class="card">
+              <div class="card-header">
+                <h3 class="card-title">Tous Mes Abonnements</h3>
+              </div>
+              <!-- /.card-header -->
+              <div class="card-body">
+                <table id="example1" class="table table-bordered table-striped">
+                  <thead>
+                  <tr>
+                    <th>Numéro de Série</th>
+                    <th>Numéro d'Activation</th>
+                    <th class="text-center">Disponibilité de l'Abonnement</th>
+                    <th class="text-center">Etat de L'Abonnement</th>
+                  
+                  </tr>
+                  </thead>
+                  <tbody>
+                {% for line in abonnements %}
+                
+                  <tr>
+                    <td> {{ line.getNumeroSerie() }} </td>
+                    <td> {{ line.getNumeroActivation() }} </td>
+                    <td class="text-center"> 
+                      {% if line.isStatus %}
+                      <span class="badge badge-success"> disponible</span>
+                           
+                      {% else %}
+                            <span class="badge badge-secondary">
+                              Non disponible
+                            </span>
+                            
+                      {% endif %}
+                    </td>
+                    <td class="text-center">
+                        {% if line.getActivationAbonnements %}
+                            <span class="badge badge-success">activé</span>
+                          {% else %}
+                            <span class="badge badge-secondary">désactivé</span>
+                          {% endif %}
+                    </td>
+                  
+                  </tr>
+                  {% endfor %}
+                  </tbody>
+                  <tfoot>
+                  <tr>
+                    <th>Numéro de Série</th>
+                    <th>Numéro d'Activation</th>
+                    <th class="text-center">Disponibilité de l'Abonnement</th>
+                    <th class="text-center">Etat de L'Abonnement</th>
+                    
+                  </tr>
+                  </tfoot>
+                </table>
+              </div>
+              <!-- /.card-body -->
+            </div>
+            <!-- /.card -->
+
+          </div>
+        </div>
+      </div>
+      <!-- /.container-fluid -->
+    </section>
+    <!-- /.content -->
+  </div>
+  <!-- /.content-wrapper -->
+
+  <script>
+  $(function () {
+    $("#example1").DataTable({
+      "responsive": true, "lengthChange": false, "autoWidth": false,
+      "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
+    }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
+    $('#example2').DataTable({
+      "paging": true,
+      "lengthChange": false,
+      "searching": false,
+      "ordering": true,
+      "info": true,
+      "autoWidth": false,
+      "responsive": true,
+    });
+  });
+</script>
+{% endblock %}
+

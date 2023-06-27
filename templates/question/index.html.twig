@@ -1,0 +1,175 @@
+{% extends 'base.html.twig' %} {% block title %}
+  Business | Questions de decouverte
+{% endblock %}
+
+{% block body %}
+  <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-6">
+            <h1>Questions de decouverte</h1>
+          </div>
+          <div class="col-sm-6">
+            <ol class="breadcrumb float-sm-right">
+              <li class="breadcrumb-item">
+                <a href="#">Accueil</a>
+              </li>
+              <li class="breadcrumb-item active">Questions de decouverte</li>
+            </ol>
+          </div>
+        </div>
+      </div>
+      <!-- /.container-fluid -->
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-12">
+            <div class="card">
+              <div class="card-header d-flex">
+                <h3 class="card-title">Questions</h3>
+                <div class="ml-auto">
+                  <a href="{{ path('questions.create') }}" class="btn btn-primary" role="button">+ Ajouter</a>
+                </div>
+              </div>
+              <!-- /.card-header -->
+              <div class="card-body">
+                {% if questions %}
+                  <table id="example1" class="table table-bordered table-striped">
+                    <thead>
+                      <tr>
+                        <th>Libellé</th>
+                        <th>Type de choix</th>
+                        <th class="text-center">status </th>
+                        <th class="text-right">Actions</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {% for question in questions %}
+                        <tr>
+                          <td>{{ question.getLibelle }}</td>
+                          <td>
+                            {% if question.isMultiple %}
+															Multiple
+														{% else %}
+															Unique
+													  {% endif %}
+                          </td>
+                          <td class="text-center">
+                              
+														{% if question.isStatus %}
+															<span class="badge badge-success">Activé</span>
+														{% else %}
+															<span class="badge badge-secondary">Désactivé</span>
+														{% endif %}
+													
+                          </td>
+
+                          <td class="text-right">
+                            {% if question.isStatus %}
+                              <a href="{{ path('questions.status', { id: question.getId,status:0 }) }}" class="btn btn-secondary" role="button">Désactiver</a>
+															
+														{% else %}
+                              <a href="{{ path('questions.status', { id: question.getId,status:1 }) }}" class="btn btn-success" role="button">Activer</a>
+															
+														{% endif %}
+                            <button type="button" class="btn  btn-primary" data-toggle="modal" data-target="#modal{{ question.getId }}">Réponses</button>
+                            <a href="{{ path('questions.update', { id: question.getId }) }}" class="btn btn-primary" role="button">Modifier</a>
+                          </td>
+                         
+                        </tr>
+                        
+                      {% endfor %}
+                    </tbody>
+                  </table>
+
+                  <!-- /.card-body -->
+                {% else %}
+                  <div class="alert alert-warning" role="alert">Aucun question</div>
+                {% endif %}
+                <!-- /.card -->
+              </div>
+              <!-- /.col -->
+            </div>
+            <!-- /.row -->
+          </div>
+        </div>
+      </div>
+      <!-- /.container-fluid -->
+    </section>
+    <!-- /.content -->
+  </div>
+{% for question in questions %}
+  
+    <div class="modal fade" id="modal{{ question.getId }}" style="display: none;" aria-hidden="true">
+     
+        <div class="modal-dialog modal-lg">
+          <div class="modal-content">
+            <div class="modal-header badge ">
+              <h5 class="modal-title">Les réponses possibles</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+            </div>
+            <div class="modal-body">
+              <h6>
+                {{question.getLibelle}}
+              </h6>
+              {% if question.getReponseDecouvertes %}
+              <table id="example{{ question.getId }}" class="table table-bordered table-striped">
+                <thead>
+                  <tr>
+                    <th>Réponse</th>
+                    <th>Etat</th>
+                    <th class="text-right">Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for reponse in question.getReponseDecouvertes %}
+                    <tr>
+                      <td>{{reponse.getLibelle}}</td>
+                      
+                      <td>
+                            {% if reponse.isStatus %}
+															<span class="badge badge-success">Activé</span>
+														{% else %}
+															<span class="badge badge-secondary">Désactivé</span>
+													  {% endif %}
+                      </td>
+
+                      <td class="text-right">
+                            {% if reponse.isStatus %}
+                              <a href="{{ path('questions.reponse.status', { id: question.getId, reponse_id: reponse.getId, status:0 }) }}" class="btn btn-sm btn-secondary" role="button">Désactiver</a>
+															
+														{% else %}
+                              <a href="{{ path('questions.reponse.status', { id: question.getId, reponse_id: reponse.getId, status:1 }) }}" class="btn btn-sm btn-success" role="button">Activer</a>
+															
+														{% endif %}
+                        <a href="{{ path('questions.reponse.update', { id: question.getId, reponse_id: reponse.getId }) }}" class="btn btn-sm btn-primary" role="button">Modifier</a>
+                      </td>
+                    </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            {% endif %}
+             
+            </div>
+            <div class="modal-footer card-footer text-right py-0">
+              <button type="button" class="btn btn-default" data-dismiss="modal">fermer</button>
+              <a href="{{ path('questions.reponse.create', { id: question.getId }) }}" class="btn btn-primary" role="button">Nouvelle réponse</a>
+            </div>
+          </div>
+          <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    
+    </div>
+ 
+{% endfor %}
+{% endblock %}
+{% block javascripts %}
+
+{% endblock %}

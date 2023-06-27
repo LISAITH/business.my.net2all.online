@@ -1,0 +1,95 @@
+{% extends 'base.html.twig' %} 
+
+{% block title %}
+  {{ controller_name ?? "Business" }}
+{% endblock %}
+
+
+
+{% block body %}
+  <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-6">
+            <h1>Générer des kits</h1>
+          </div>
+          <div class="col-sm-12">
+            <ol class="breadcrumb float-sm-right">
+              <li class="breadcrumb-item">
+                <a href="#">Accueil</a>
+              </li>
+              <li class="breadcrumb-item active">Générer des kits</li>
+            </ol>
+          </div>
+        </div>
+      </div>
+      <!-- /.container-fluid -->
+    </section>
+
+
+
+      <!-- Main content -->
+    <section class="content">
+      <div class="container-fluid">
+        <div class="row">
+          <!-- left column -->
+          <div class="col-md-12">
+            <!-- jquery validation -->
+            <div class="card card-secondary">
+              <div class="card-header">
+                <h3 class="card-title"> <small>Renseigner le nombre de kits à Générer </small></h3>
+              </div>
+              <!-- /.card-header -->
+              <!-- form start -->
+              {{ form_start(form) }}
+                <div class="card-body  row">
+                    
+                 
+                  
+
+                    <div class="form-group col-md-12">
+                      <label for="exampleInputEmail1">Nombre</label>
+                      <div class="input-group ">
+                        <div class="input-group-prepend">
+                          <span class="input-group-text"><i class="fas fa-pen"></i></span>
+                        </div>
+                         {{ form_widget(form.number,{"attr":{"class":" form-control "}})}}
+                         
+                      </div>
+                      <span class="texte-light text-danger mt-0 ">{{form_errors(form.number) }} </span>
+                    </div>
+                    
+                
+        
+                        
+                      
+                 
+                
+                </div>
+                <!-- /.card-body -->
+                <div class="card-footer  text-right ">
+                  <button type="submit" class="btn btn-primary">Générer</button>
+                </div>
+            {{ form_end(form) }}
+            </div>
+            <!-- /.card -->
+          </div>
+          <!-- /.col (left) -->
+          <!-- right column -->
+          <div class="col-md-6"></div>
+          <!-- /.col (right) -->
+        </div>
+        <!-- /.row -->
+      </div>
+      <!-- /.container-fluid -->
+    </section>
+    <!-- /.content -->
+
+   
+  
+  </div>
+  <!-- /.content-wrapper -->
+{% endblock %}

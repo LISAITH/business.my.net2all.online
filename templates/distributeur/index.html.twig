@@ -1,0 +1,90 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+  {{ controller_name ?? 'Business' }}
+{% endblock %}
+
+{% block sidebar %}
+  {% include 'layouts/sidebar/partenaire.html.twig' %}
+{% endblock %}
+
+{% block body %}
+  <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-6">
+            <h1>Distributeurs</h1>
+          </div>
+          <div class="col-sm-6">
+            <ol class="breadcrumb float-sm-right">
+              <li class="breadcrumb-item">
+                <a href="#">Accueil</a>
+              </li>
+              <li class="breadcrumb-item active">Distributeurs</li>
+            </ol>
+          </div>
+        </div>
+      </div>
+      <!-- /.container-fluid -->
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-12">
+            <div class="card">
+              <div class="card-header">
+                <h3 class="card-title">Distributeurs</h3>
+              </div>
+              <!-- /.card-header -->
+              <div class="card-body">
+                <table id="example1" class="table table-bordered table-striped">
+                  <thead>
+                    <tr>
+                      <th>Nom</th>
+                      <th>Clé du distributeur</th>
+
+                      <th class="text-center">Etat du distributeur</th>
+                      <th class="text-right">Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% for line in distributeurs %}
+                      <tr>
+                        <td>{{ line.getNomDistributeur() }}</td>
+                        <td>{{ line.getCleDistributeur() }}</td>
+                        <td class="text-center">
+                          {% if line.getUser.isStatus() %}
+                            <span class="badge badge-success">Activé</span>
+                          {% else %}
+                            <span class="badge badge-secondary">Désactivé</span>
+                          {% endif %}
+                        </td>
+                        <td class="text-right">
+                          {% if line.getUser.isStatus() %}
+                            <a class="btn btn-sm btn-secondary" href="{{ path('distributeurs.status.unvalidate', { id: line.getUser.id }) }}">Désactiver</a>
+                          {% else %}
+                            <a href="{{ path('distributeurs.status.validate', { id: line.getUser.id }) }}" class="btn btn-sm btn-success">Activer</a>
+                          {% endif %}
+                          <a href="{{ path('distributeurs.update', { id: line.getUser.id }) }}" class="btn btn-sm btn-primary">Modifier</a>
+                        </td>
+                      </tr>
+                    {% endfor %}
+                  </tbody>
+                </table>
+              </div>
+              <!-- /.card-body -->
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- /.container-fluid -->
+    </section>
+    <!-- /.content -->
+  </div>
+  <!-- /.content-wrapper -->
+{% endblock %}

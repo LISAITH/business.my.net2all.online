@@ -1,0 +1,158 @@
+{% extends 'base.html.twig' %} {% block title %}
+  Lites des Enseignes
+{% endblock %} 
+{% block stylesheets %}
+
+{% endblock %}
+{% block body %}
+  <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-6">
+            <h1>Toutes les Enseignes</h1>
+          </div>
+          <div class="col-sm-6">
+            <ol class="breadcrumb float-sm-right">
+              <li class="breadcrumb-item"><a href="#">Accueil</a></li>
+              <li class="breadcrumb-item active">Toutes les Enseignes</li>
+            </ol>
+          </div>
+        </div>
+      </div><!-- /.container-fluid -->
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-12">
+            <div class="card">
+              <div class="card-header">
+                <h3 class="card-title">Toutes les Enseignes</h3>
+                
+              </div>
+              <!-- /.card-header -->
+              <div class="card-body">
+               {% if enseignes!=null %}
+                <table id="example1" class="table table-bordered table-striped">
+                  <thead>
+                  <tr>
+                    <th>Nom Enseigne</th>
+                    <th>Code Enseigne</th>
+                    <th>Nom Entreprise</th>
+                    <th>Etat du Compte</th>
+                    <th class="text-right">Actions</th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                  {% for enseigne in enseignes %}
+                  <tr>
+                    <td>{{ enseigne.getNomEnseigne }}</td>
+                    <td>{{ enseigne.getCodeEnseigne }} </td>
+                    <td>{{ enseigne.getEntreprise.getNomEntreprise }} </td>
+                    <td>
+                        {% if enseigne.isIsValidated %}
+                          <span class="badge badge-success">Activé</span>
+                          {% else %}
+                          <span class="badge badge-secondary">Désactivé</span>
+                          {% endif %}
+                    </td>
+                    <td class="text-right">
+                        {% if enseigne.isIsValidated %}
+                           <a href="{{path("enseigne.desactive",{id:enseigne.getId})}}" class="btn btn-danger" role="button">Désactiver</a> 
+                        {% else %}
+                          <a href="{{path("enseigne.active",{id:enseigne.getId})}}" class="btn btn-primary" role="button">Activer </a> 
+						  	 <a href="{{path("enseigne_delete",{id:enseigne.getId})}}" {#data-bs-toggle="modal" data-bs-target="#modal-delete{{enseigne.getId}}"  #} class="btn btn-danger"
+                         >
+                       <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><line x1="4" y1="7" x2="20" y2="7" /><line x1="10" y1="11" x2="10" y2="17" /><line x1="14" y1="11" x2="14" y2="17" /><path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12" /><path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3" /></svg>
+                      </a>
+                        {% endif %}
+					
+                    </td>
+                    </form>
+                  </div>
+                  </tr>
+                  {% endfor %}
+                  </tfoot>
+                </table>
+              </div>
+              <!-- /.card-body -->
+            </div>
+            {% else %}
+            <div class="alert alert-warning" role="alert">
+              Aucune Entreprise n'a été ajouté 
+            </div>
+            {% endif %}
+            <!-- /.card -->
+          </div>
+          <!-- /.col -->
+        </div>
+        <!-- /.row -->
+      </div>
+      <!-- /.container-fluid -->
+    </section>
+    <!-- /.content -->
+  </div>
+  
+  
+  
+  
+  
+    {% for enseigne in enseignes %}
+    
+	   
+	 <div class="modal modal-blur fade" id="modal-delete{{enseigne.getId}}" tabindex="-1" role="dialog" aria-hidden="true">
+      <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
+        <div class="modal-content">
+		
+			
+			
+			
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+		  
+          <div class="modal-status bg-danger"></div>
+		  
+          <div class="modal-body text-center py-4">
+		  
+            <!-- Download SVG icon from http://tabler-icons.io/i/alert-triangle -->
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon mb-2 text-danger icon-lg" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 9v2m0 4v.01" /><path d="M5 19h14a2 2 0 0 0 1.84 -2.75l-7.1 -12.25a2 2 0 0 0 -3.5 0l-7.1 12.25a2 2 0 0 0 1.75 2.75" /></svg>
+			
+            <h3>Suppression d'enseigne</h3>
+			
+            <div class="text-muted">Vous êtes sur le point de supprimer l'enseigne suivante: <br/> 
+			{{enseigne.getNomEnseigne}}</div>
+          </div>
+			
+			<form action="" method="POST" >
+			
+			
+			   
+			    
+			
+			
+          <div class="modal-footer">
+            <button type="button" class="btn btn-link link-secondary me-auto" data-bs-dismiss="modal">Retour</button>
+            <button  type="submit"  class="btn btn-danger">Oui, Supprimer</button>
+          </div>
+
+			</form>
+        </div>
+      </div>
+    </div>
+  
+  
+  
+   {% endfor %}
+  
+  
+  
+  
+  
+
+{% endblock %}
+{% block javascripts %}
+   
+{% endblock %}
