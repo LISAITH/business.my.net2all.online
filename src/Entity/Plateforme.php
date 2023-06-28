@@ -5,13 +5,18 @@ namespace App\Entity;
 use App\Repository\PlateformeRepository;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: PlateformeRepository::class)]
+
+/**
+ * @ORM\Entity
+ */
 class Plateforme
 {
-    #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column]
-    private ?int $id = null;
+    /**
+     * @ORM\Id
+     * @ORM\GeneratedValue
+     * @ORM\Column(type="integer")
+     */
+    private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
