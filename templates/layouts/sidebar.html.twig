@@ -36,20 +36,13 @@
           <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
 
+          
+          {% if app.user.getType.getId==4 %}
           <li class="nav-item menu-open">
             <a href="{{ path('app_dashboard')}}" class="nav-link active">
               <i class="nav-icon fas fa-tachometer-alt"></i>
               <p>
                 Dashboard
-              </p>
-            </a>
-          </li>
-          {% if app.user.getType.getId==4 %}
-          <li class="nav-item">
-            <a href="{{ path('add_partenaire')}}" class="nav-link" role="button">
-              <i class="nav-icon fas fa-user" style="color:white"></i>
-              <p style="color:white;"> 
-              Ajouter un Partenaire
               </p>
             </a>
           </li>
@@ -71,7 +64,7 @@
               <li class="nav-item">
                 <a href="{{ path('partenaire.index') }}" class="nav-link">
                   <i class="fas fa-table nav-icon"></i>
-                  <p>Voir les Partenaires</p>
+                  <p>Liste des Partenaires</p>
                 </a>
               </li>
 
@@ -95,7 +88,7 @@
               <li class="nav-item">
                 <a href="{{  path('app_service') }}" class="nav-link">
                   <i class="fas fa-table nav-icon"></i>
-                  <p>Voir Tous les Services</p>
+                  <p>Liste des Services</p>
                 </a>
               </li>
             </ul>
@@ -112,13 +105,13 @@
               <li class="nav-item">
                 <a href="{{  path('add_communaute') }}" class="nav-link">
                   <i class="fas fa-plus-square nav-icon"></i>
-                  <p>Ajouter une communaute</p>
+                  <p>Ajouter une communauté</p>
                 </a>
               </li>
               <li class="nav-item">
                 <a href="{{  path('app_communaute') }}" class="nav-link">
                   <i class="fas fa-table nav-icon"></i>
-                  <p>Voir  toutes les Communautés</p>
+                  <p>Liste des Communautés</p>
                 </a>
               </li>
             </ul>
@@ -171,31 +164,40 @@
               <li class="nav-item">
                 <a href="{{path("app_pays")}}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>Voire les Pays</p>
+                  <p>Liste les Pays</p>
                 </a>
-              </li>
-            
+              </li>            
             </ul>
           </li>
           <li class="nav-item">
+            <a href="#" class="nav-link">
+              <i class="fas fa-table nav-icon"></i>
+              <p>
+                Consultations<i class="fas fa-angle-left right"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
                 <a href="{{path("app_enseignes")}}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>Toutes les Enseignes</p>
+                  <p>Liste des Enseignes</p>
                 </a>
-          </li>
-          <li class="nav-item">
+              </li>
+              <li class="nav-item">
                 <a href="{{path("app_entreprises")}}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>Toutes les Entreprises</p>
+                  <p>Liste les Entreprises</p>
                 </a>
-          </li>
-          <li class="nav-item">
+              </li>
+              <li class="nav-item">
                 <a href="{{path("app_particuliers")}}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>Tous les Particuliers</p>
+                  <p>Liste les Particuliers</p>
                 </a>
+              </li>            
+            </ul>
           </li>
-           <li class="nav-item">
+          <li class="nav-item">
             <a href="#" class="nav-link">
               <i class="nav-icon fas fa-book"></i>
               <p>
@@ -213,13 +215,12 @@
               <li class="nav-item">
                 <a href="{{path("kits.index")}}" class="nav-link">
                   <i class="nav-icon fas fa-table"></i>
-                  <p>Tous mes Kits</p>
+                  <p>Liste de mes Kits</p>
                 </a>
               </li>
-             
             </ul>
           </li>
-           <li class="nav-item">
+          <li class="nav-item">
             <a href="#" class="nav-link">
               <i class="nav-icon fas fa-book"></i>
               <p>
@@ -231,7 +232,7 @@
                <li class="nav-item">
                 <a href="{{path("admin.prospections.profile")}}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>Tous les Profils</p> 
+                  <p>Liste des Profils</p> 
                 </a>             
               </li>
               <li class="nav-item">
@@ -243,23 +244,30 @@
               <li class="nav-item">
                 <a href="{{path("admin.prospections.index")}}" class="nav-link">
                   <i class="nav-icon fas fa-table"></i>
-                  <p>Les {{ profil_prospection(5)}}</p>
+                  <p>Liste des {{ profil_prospection(5)}}</p>
                 </a>
               </li>
-               <li class="nav-item">
-                <a href="{{path("params.index")}}" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Paramètres </p> 
-                </a>             
-              </li>
-              <li class="nav-item">
-                <a href="{{path("questions.index")}}" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Questions de decouverte </p> 
-                </a>             
-              </li>
-             
             </ul>
+          </li>
+          <li class="nav-item">
+            <a href="{{path("app_recharges.credite_compte")}}" class="nav-link">
+              <i class="far fa-circle nav-icon"></i>
+              <p>Créditer Compte</p>
+            </a>
+          </li>
+          <li class="nav-item menu-open">
+            <a href="{{path("params.index")}}" class="nav-link">
+                <i class="far fa-circle nav-icon"></i>
+              <p>
+                Paramètres
+              </p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="{{path("questions.index")}}" class="nav-link">
+              <i class="far fa-circle nav-icon"></i>
+              <p>Questions de decouverte </p> 
+            </a>             
           </li>
            {% elseif app.user.getType.getId==3  %}
                {% include "layouts/sidebar/partenaire.html.twig" %}
@@ -268,6 +276,14 @@
           {% elseif app.user.getType.getId==5  %}
                {% include "layouts/sidebar/point_vente.html.twig" %}
           {% elseif app.user.getType.getId==6  %}
+          <li class="nav-item menu-open">
+            <a href="{{ path('app_dashboard')}}" class="nav-link active">
+              <i class="nav-icon fas fa-tachometer-alt"></i>
+              <p>
+                Dashboard
+              </p>
+            </a>
+          </li>
           <li class="nav-item">
             <a href="{{ path('add_enseignes')}}" class="nav-link" role="button">
               <i class="nav-icon fas fa-user" style="color:white"></i>

@@ -35,7 +35,7 @@ class AuthController extends AbstractController
     }
     
     public function checkAuth(){
-        
+
         return $this->security->getUser()!=null;
     }
 

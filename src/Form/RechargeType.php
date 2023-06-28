@@ -16,14 +16,14 @@ class RechargeType extends AbstractType
             ->add('numero_sous_compte',TextType::class,[
                 'attr' => ['class' => 'form-control', 'placeholder' => "Numéro du sous compte"],
             ])
+            ->add('solde',NumberType::class,[
+                'attr' => ['class' => 'form-control', 'placeholder' => "Solde", 'disabled' => true],
+            ])
             ->add('numero_compte',TextType::class,[
                 'attr' => ['class' => 'form-control', 'placeholder' => "Numéro de compte"],
             ])
             ->add('name_compte',TextType::class,[
                 'attr' => ['class' => 'form-control', 'placeholder' => "Nom & Prénom / Raison sociale", 'disabled' => true],
-            ])
-            ->add('phone_compte',TextType::class,[
-                'attr' => ['class' => 'form-control', 'placeholder' => "Téléphone", 'disabled' => true],
             ])
             ->add('montant',NumberType::class,[
                 'attr' => ['class' => 'form-control', 'placeholder' => "Montant",'min'=>'100','max'=>'2000000'],

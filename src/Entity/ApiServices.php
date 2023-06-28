@@ -82,6 +82,11 @@ class ApiServices
     private $baseurl;
 
     /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $webstockUrl;
+
+    /**
      * @ORM\Column(type="text", nullable=true)
      */
     private $api_key;
@@ -232,6 +237,18 @@ class ApiServices
     public function setBaseurl(?string $baseurl): self
     {
         $this->baseurl = $baseurl;
+
+        return $this;
+    }
+
+    public function getWebstockUrl(): ?string
+    {
+        return $this->webstock_url;
+    }
+
+    public function setWebstockUrl(?string $webstock_url): self
+    {
+        $this->webstock_url = $webstock_url;
 
         return $this;
     }

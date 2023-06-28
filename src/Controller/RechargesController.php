@@ -19,7 +19,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class RechargesController extends AuthController
 {
-    protected $type=5;
+    // protected $type=5;
 
     #[Route('/recharges/credite_sous_compte', name: 'app_recharges.credite_sous_compte')]
     public function credite_souscompte(Request $request,EntityManagerInterface $entityManager,SousCompteRepository $compte_sousRepository,CompteEcashRepository $compte_ecashRepository,FlashyNotifier $flashy): Response
@@ -61,7 +61,28 @@ class RechargesController extends AuthController
     #[Route('/recharges/credite_compte', name: 'app_recharges.credite_compte')]
     public function credite_compte(Request $request,EntityManagerInterface $entityManager,CompteEcashRepository $compte_ecashRepository,FlashyNotifier $flashy): Response
     {
-        if(!$this->checkAuthType()) return $this->forbidden();
+        if($this->checkAuthType()) return $this->forbidden();
+        $type = $this->getUser()->getType()->getId();
+
+        if ($type === 1) {
+            $user=$this->getUser()->getParticuliers();
+        } elseif ($type === 2) {
+            $user=$this->getUser()->getDistributeur();
+        } elseif ($type === 3) {    
+            $user=$this->getUser()->getPartenaire();
+        } elseif ($type === 4) {
+            // Pas encore de solution
+        } elseif ($type === 5) {
+            $user=$this->getUser()->getPointVente();
+        } elseif ($type === 6) {
+            $user=$this->getUser()->getEntreprises();
+        }
+
+
+        dd($user);
+
+
+        
         $point_vente=$this->getUser()->getPointVente();
         $recharge=new Recharges();
         $form = $this->createForm(RechargeType::class);
