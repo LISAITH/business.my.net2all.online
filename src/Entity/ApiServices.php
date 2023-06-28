@@ -14,7 +14,7 @@ use Doctrine\ORM\Mapping as ORM;
     'get-affiliation' => ['route_name' => 'get-affiliation', 'openapi_context' => [
         'summary'     => 'Get',
         'description' => "",
-        
+
     ]],
     'update-afiiliation' => ['route_name' => 'update-afiiliation'],
     'afiiliation-installation-demande' => ['route_name' => 'afiiliation-installation-demande'],
@@ -241,15 +241,21 @@ class ApiServices
         return $this;
     }
 
-    public function getWebstockUrl(): ?string
+    /**
+     * @return mixed
+     */
+    public function getWebstockUrl()
     {
-        return $this->webstock_url;
+        return $this->webstockUrl;
     }
 
-    public function setWebstockUrl(?string $webstock_url): self
+    /**
+     * @param mixed $webstockUrl
+     * @return ApiServices
+     */
+    public function setWebstockUrl($webstockUrl)
     {
-        $this->webstock_url = $webstock_url;
-
+        $this->webstockUrl = $webstockUrl;
         return $this;
     }
 
