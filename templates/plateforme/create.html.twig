@@ -1,0 +1,139 @@
+{% extends 'base.html.twig' %} {% block title %}
+  Ajouter un Partenaire
+{% endblock %} {% block body %}
+  <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-6">
+            <h1>Ajouter un Partenaire</h1>
+          </div>
+          <div class="col-sm-6">
+            <ol class="breadcrumb float-sm-right">
+              <li class="breadcrumb-item">
+                <a href="#">Accueil</a>
+              </li>
+              <li class="breadcrumb-item active">Ajoute d'un partenaire </li>
+            </ol>
+          </div>
+        </div>
+      </div>
+      <!-- /.container-fluid -->
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+      <div class="container-fluid">
+        <div class="row">
+          <!-- left column -->
+          <div class="col-md-12">
+            <!-- jquery validation -->
+            <div class="card card-secondary">
+              <div class="card-header">
+                <h3 class="card-title"><small>Entrer toutes les informations du Partenaire</small></h3>
+              </div>
+              
+              <!-- /.card-header -->
+              <!-- form start -->
+              {{ form_start(form, {'method': 'POST'}) }}
+                <div class="card-body row">
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label for="exampleInputEmail1">Nom du Partenaire</label>
+                      <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                          <span class="input-group-text"><i class="fas fa-user"></i></span>
+                        </div>
+                        {{ form_widget(form.nom_partenaire)}}
+                      </div>
+                      <span class="texte-light text-danger mt-0 ">{{ form_errors(form.nom_partenaire) }} </span>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label for="exampleInputEmail1"> Email</label>
+                      <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                          <span class="input-group-text"><i class="fas fa-lock"></i></span>
+                        </div>
+                       {{ form_widget(form.user.email)}}
+                      </div>
+                      <span class="texte-light text-danger mt-0 ">{{form_errors(form.user.email) }} </span>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label for="exampleInputEmail1">Mot de pass</label>
+                      <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                          <span class="input-group-text"><i class="fas fa-lock"></i></span>
+                        </div>
+                        {{ form_widget(form.user.password.first,{"attr":{"class":" form-control "}})}}
+                      </div>
+                      <span class="texte-light text-danger mt-0 ">{{form_errors(form.user.password.first) }} </span>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label for="exampleInputEmail1">Confirmation du Mot de Passe</label>
+                      <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                          <span class="input-group-text"><i class="fas fa-lock"></i></span>
+                        </div>
+                        {{ form_widget(form.user.password.second,{"attr":{"class":" form-control "}})}}
+                      </div>
+                      <span class="texte-light text-danger mt-0 ">{{form_errors(form.user.password.second) }} </span>
+                    </div>
+                  </div>
+
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label for="exampleInputEmail1">Code Du Pays</label>
+                      <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                          <span class="input-group-text"><i class="fas fa-pencil-alt"></i></span>
+                        </div>
+                          <select class="form-control" name="code_pays" required>
+                            <option value="">Choisir</option>
+                            {% include 'includes/country_codes.html.twig' %}
+                          </select>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label for="exampleInputEmail1">Clé du Partenaire(3 caractères)</label>
+                      <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                          <span class="input-group-text"><i class="fas fa-lock"></i></span>
+                        </div>
+                        {{ form_widget(form.cle_partenaire)}} 
+                      </div>
+                      <span class="texte-light text-danger mt-0 "> {{form_errors(form.cle_partenaire)}} </span>
+                    </div>
+                  </div>
+
+                </div>
+                <!-- /.card-body -->
+                <div class="card-footer">
+                  <button type="submit" class="btn btn-primary">Enregistrer</button>
+                </div>
+              {{ form_end(form) }}
+            </div>
+            <!-- /.card -->
+          </div>
+          <!-- /.col (left) -->
+          <!-- right column -->
+          <!-- /.col (right) -->
+        </div>
+        <!-- /.row -->
+      </div>
+      <!-- /.container-fluid -->
+    </section>
+    <!-- /.content -->
+  </div>
+  <!-- /.content-wrapper -->
+{% endblock %}

@@ -129,12 +129,15 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     private $partenaire;
 
-   
-
     /**
      * @ORM\OneToOne(targetEntity=PointVente::class, mappedBy="user", cascade={"persist", "remove"})
      */
     private $pointVente;
+
+    /**
+     * @ORM\OneToOne(targetEntity=Plateforme::class, mappedBy="user", cascade={"persist", "remove"})
+     */
+    private $plateforme;
 
     public function __construct()
     {
@@ -287,6 +290,23 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         }
 
         $this->partenaire = $partenaire;
+
+        return $this;
+    }
+
+    public function getPlateforme(): ?Plateforme
+    {
+        return $this->plateforme;
+    }
+
+    public function setPlateforme(Plateforme $plateforme): self
+    {
+        // set the owning side of the relation if necessary
+        if ($plateforme->getUser() !== $this) {
+            $plateforme->setUser($this);
+        }
+
+        $this->plateforme = $plateforme;
 
         return $this;
     }
