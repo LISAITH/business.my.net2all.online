@@ -49,6 +49,7 @@ class Enseignes
     #[Groups(["getEnseigneWithEnterprise", "getCollaborationRequestWithEnseigneAndEnterprise", "getCollaborationWithEnseigneAndEnterprise"])]
     private $nom_enseigne;
 
+
     /**
      * @ORM\Column(type="string", length=255)
      */
