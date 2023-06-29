@@ -17,13 +17,14 @@ use Symfony\Component\Serializer\Annotation\Groups;
  */
 
 #[ApiResource(
-	 normalizationContext: ['groups' => ['getEnseigneWithEnterprise']],
-	itemOperations: [
-    'get','put', "patch", "delete",
-    'enseignes_by_user' => ['route_name' => 'post_enseignes'],
-    'active-360' => ['route_name' => 'active-360'],
-    'validate_ens' => ['route_name' => 'validate_ens']
-])]
+    normalizationContext: ['groups' => ['getEnseigneWithEnterprise']],
+    itemOperations: [
+        'get', 'put', "patch", "delete",
+        'enseignes_by_user' => ['route_name' => 'post_enseignes'],
+        'active-360' => ['route_name' => 'active-360'],
+        'validate_ens' => ['route_name' => 'validate_ens']
+    ]
+)]
 
 class Enseignes
 {
@@ -32,92 +33,91 @@ class Enseignes
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      */
-	#[Groups(["getEnseigneWithEnterprise"])]
+    #[Groups(["getEnseigneWithEnterprise", "getCollaborationRequestWithEnseigneAndEnterprise"])]
     private $id;
 
-   
-	 /**
+    /**
      * @ORM\ManyToOne(targetEntity=Entreprises::class, inversedBy="enseignes")
      * @ORM\JoinColumn(nullable=false)
      */
-	#[Groups(["getEnseigneWithEnterprise"])]
+    #[Groups(["getEnseigneWithEnterprise", "getCollaborationRequestWithEnseigneAndEnterprise"])]
     private $entreprise;
-		
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-	#[Groups(["getEnseigneWithEnterprise"])]
+    #[Groups(["getEnseigneWithEnterprise", "getCollaborationRequestWithEnseigneAndEnterprise", "getCollaborationWithEnseigneAndEnterprise"])]
     private $nom_enseigne;
 
+
     /**
      * @ORM\Column(type="string", length=255)
      */
-	#[Groups(["getEnseigneWithEnterprise"])]
+    #[Groups(["getEnseigneWithEnterprise"])]
     private $code_enseigne;
 
     /**
      * @ORM\Column(type="text")
      */
-	#[Groups(["getEnseigneWithEnterprise"])]
+    #[Groups(["getEnseigneWithEnterprise"])]
     private $url_image;
 
     /**
      * @ORM\Column(type="boolean")
      */
-	#[Groups(["getEnseigneWithEnterprise"])]
+    #[Groups(["getEnseigneWithEnterprise"])]
     private $status;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-	#[Groups(["getEnseigneWithEnterprise"])]
+    #[Groups(["getEnseigneWithEnterprise"])]
     private $phone;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-	#[Groups(["getEnseigneWithEnterprise"])]
+    #[Groups(["getEnseigneWithEnterprise"])]
     private $logo;
 
     /**
      * @ORM\Column(type="boolean", nullable=true)
      */
-	#[Groups(["getEnseigneWithEnterprise"])]
+    #[Groups(["getEnseigneWithEnterprise"])]
     private $is_validated;
 
     /**
      * @ORM\Column(type="boolean", nullable=true)
      */
-	#[Groups(["getEnseigneWithEnterprise"])]
+    #[Groups(["getEnseigneWithEnterprise"])]
     private $is_360_installed;
 
     /**
      * @ORM\OneToOne(targetEntity=Prospections::class, mappedBy="enseigne", cascade={"persist", "remove"})
      */
-	#[Groups(["getEnseigneWithEnterprise"])]
+    #[Groups(["getEnseigneWithEnterprise"])]
     private $prospections;
 
 
     /**
      * @ORM\OneToOne(targetEntity=ActivationAbonnements::class, mappedBy="enseigne", cascade={"persist", "remove"})
      */
-	#[Groups(["getEnseigneWithEnterprise"])]
+    #[Groups(["getEnseigneWithEnterprise"])]
     private $activationAbonnements;
 
     /**
      * @ORM\OneToMany(targetEntity=SouscriptionFormules::class, mappedBy="enseigne")
      */
-	#[Groups(["getEnseigneWithEnterprise"])]
+    #[Groups(["getEnseigneWithEnterprise"])]
     private $souscriptionFormules;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-	#[Groups(["getEnseigneWithEnterprise"])]
+    #[Groups(["getEnseigneWithEnterprise"])]
     private $address;
 
-    
+
 
     public function __construct()
     {
