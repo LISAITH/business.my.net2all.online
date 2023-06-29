@@ -21,15 +21,15 @@ class Entreprises
      * @ORM\Column(type="integer")
      * @Groups({"user:read"})
      */
-    
-     #[Groups(["compteEcash", "getEnseigneWithEnterprise"])]
+
+    #[Groups(["compteEcash", "getEnseigneWithEnterprise"])]
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
      * @Groups({"user:read","user:write"})
      */
-   #[Groups("compteEcash")]
+    #[Groups("compteEcash")]
     private $nom;
 
     /**
@@ -43,14 +43,14 @@ class Entreprises
      * @ORM\Column(type="string", length=255)
      * @Groups({"user:read","user:write"})
      */
-     #[Groups(["compteEcash", "getEnseigneWithEnterprise"])]
+    #[Groups(["compteEcash", "getEnseigneWithEnterprise"])]
     private $nom_entreprise;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      * @Groups({"user:read","user:write"})
      */
-     #[Groups(["compteEcash", "getEnseigneWithEnterprise"])]
+    #[Groups(["compteEcash", "getEnseigneWithEnterprise"])]
     private $url_image;
 
     /**

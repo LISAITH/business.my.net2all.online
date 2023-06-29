@@ -5,62 +5,81 @@ namespace App\Entity;
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\CollaborationRequestRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=CollaborationRequestRepository::class)
  */
-#[ApiResource(itemOperations: [
-   'get', 'put', "patch", "delete",
-    'get-collab-req' => ['route_name' => 'get-collab-req', 'openapi_context' => [
-        'summary'     => 'Get',
-        'description' => "",
-        
-    ]],
-])]
+#[ApiResource(
+    normalizationContext: ['groups' => ['getCollaborationRequestWithEnseigneAndEnterprise']],
+    itemOperations: [
+        'get', 'put', "patch", "delete",
+        'get-collab-req' => ['route_name' => 'get-collab-req', 'openapi_context' => [
+            'summary'     => 'Get',
+            'description' => "",
+
+        ]],
+    ]
+)]
 class CollaborationRequest
-{	
+{
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      */
+    #[Groups(['getCollaborationRequestWithEnseigneAndEnterprise'])]
     private $id;
-	
+
     /**
      * @ORM\Column(type="datetime")
      */
+    #[Groups(['getCollaborationRequestWithEnseigneAndEnterprise'])]
     private $date;
 
     /**
      * @ORM\Column(type="integer")
      */
+    #[Groups(['getCollaborationRequestWithEnseigneAndEnterprise'])]
     private $service_id;
 
     /**
      * @ORM\Column(type="integer")
      */
+    #[Groups(['getCollaborationRequestWithEnseigneAndEnterprise'])]
     private $enseigne_id;
+
+    /** 
+     * @ORM\ManyToOne(targetEntity=Enseignes::class)
+     * @ORM\JoinColumn(nullable=false)
+     */
+    #[Groups('getCollaborationRequestWithEnseigneAndEnterprise')]
+    private $enseigne;
 
     /**
      * @ORM\Column(type="integer")
      */
+    #[Groups(['getCollaborationRequestWithEnseigneAndEnterprise'])]
     private $expediteur_id;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
+    #[Groups(['getCollaborationRequestWithEnseigneAndEnterprise'])]
     private $expediteur_type;
 
     /**
      * @ORM\Column(type="integer")
      */
+    #[Groups(['getCollaborationRequestWithEnseigneAndEnterprise'])]
     private $destinataire_id;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
+    #[Groups(['getCollaborationRequestWithEnseigneAndEnterprise'])]
     private $destinataire_type;
-	 
+
     public function getId(): ?int
     {
         return $this->id;
@@ -95,9 +114,26 @@ class CollaborationRequest
         return $this->enseigne_id;
     }
 
+    /**
+     * getEnseigne
+     *
+     * @return Enseignes
+     */
+    public function getEnseigne(): ?Enseignes
+    {
+        return $this->enseigne;
+    }
+
     public function setEnseigneId(int $enseigne_id): self
     {
         $this->enseigne_id = $enseigne_id;
+
+        return $this;
+    }
+
+    public function setEnseigne(Enseignes $enseigne): self
+    {
+        $this->enseigne = $enseigne;
 
         return $this;
     }
@@ -149,8 +185,4 @@ class CollaborationRequest
 
         return $this;
     }
-	
-	
-
-    
 }
