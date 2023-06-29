@@ -43,17 +43,11 @@ class SecurityController extends AbstractController
     /**
      * @Route("/login", name="app_login")
      */
-    public function login(
-        Request $request,
-        UserPasswordHasherInterface $hasher,
-        UserAuthenticatorInterface $userAuthenticator,
-        AppCustomAuthenticator $authenticator,
-        UserRepository $repositoryUser
-    ): Response {
+    public function login(Request $request,UserPasswordHasherInterface $hasher,UserAuthenticatorInterface $userAuthenticator,AppCustomAuthenticator $authenticator,UserRepository $repositoryUser): Response 
+    {
         $error = null;
         $user = null;
-
-
+        
         if ($request->isMethod("POST")) {
         
             if ($this->isCsrfTokenValid('authenticate', $request->request->get('_csrf_token'))) {
@@ -79,21 +73,12 @@ class SecurityController extends AbstractController
                         $error = "Mot de passe incorrect";
                     }
                 }
-               
-
-
-                // if ($this->getUser()) {
-                //    return $this->redirectToRoute('app_home');
-                // }
-           
-
+                
             } else {
                 $error = "Token expiré, veuillez réessayer.";
             }
         }
        
-
-
         return $this->render('security/login.html.twig');
     }
 
