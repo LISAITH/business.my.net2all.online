@@ -23,14 +23,14 @@ use App\Services\AppServices;
 
 class PlateformeController extends AuthController
 {   
-    protected $type = 7;
+    protected $type = 4;
 
     #[Route('/plateforme', name: 'plateforme.index')]
     public function index(PlateformeRepository $plat): Response
     {  
         // verifier si l'utilisateur est un partenaire
         if(!$this->checkAuthType()) return $this->forbidden();
-
+        
         $plateforme=$plat->findAll();
         return $this->render('plateforme/index.html.twig', [
             'controller_name' => 'DistributeurController',
@@ -38,27 +38,27 @@ class PlateformeController extends AuthController
         ]);
     }
 
-
     #[Route('/add_plateforme', name: 'add_plateforme')]
     public function create(Request $request,ManagerRegistry $doctrine,UserPasswordHasherInterface $userPasswordHasher, AppServices $appServices, HttpClientInterface $httpClient): Response
     {
-        // verifier si l'utilisateur est un partenaire
+        // verifier si l'utilisateur est un plateforme
         if(!$this->checkAuthType()) return $this->forbidden();
-        $type = $doctrine->getRepository(Type::class)->find(3);
-        $partenaire=new Partenaire();
+        $type = $doctrine->getRepository(Type::class)->find(7);
+        $plateforme=new Plateforme();
         $user=new User();
         $user->setType($type)->setStatus(true);
-        $partenaire->setUser($user);
-        $form = $this->createForm(PartenaireType::class, $partenaire);
+        $plateforme->setUser($user);
+        $form = $this->createForm(PlateformeType::class, $plateforme);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $partenaire->getUser()->setPassword($userPasswordHasher->hashPassword($user,$user->getPassword()));
-            $partenaire->setCodePays($request->request->get('code_pays'));
+            $plateforme->getUser()->setPassword($userPasswordHasher->hashPassword($user,$user->getPassword()));
+            $plateforme->setNom($request->request->get('nom'));
+            $plateforme->setNumTel($request->request->get('num_tel'));
             $entityManager = $doctrine->getManager();
-            $entityManager->persist($partenaire);            
+            $entityManager->persist($plateforme);            
             $entityManager ->flush();
 
-            $url = $appServices->getBpayServerAddress() . '/create/compte/Bpay/' . $partenaire->getId() . '/' . $type->getId();
+            $url = $appServices->getBpayServerAddress() . '/create/compte/Bpay/' . $plateforme->getId() . '/' . $type->getId();
 			$response = $httpClient->request('POST', $url, [
                 'headers' => [
                     'Content-Type: application/json',
@@ -67,10 +67,10 @@ class PlateformeController extends AuthController
             ]);
             $content = $response->getContent();
 
-            return $this->redirectToRoute("partenaire.index");
+            return $this->redirectToRoute("plateforme.index");
        }
-        return $this->render('partenaire/create.html.twig', [
-            'controller_name' => 'PartenaireController',
+        return $this->render('plateforme/create.html.twig', [
+            'controller_name' => 'PlateformeController',
             'form' => $form->createView()
         ]);
     }

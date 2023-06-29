@@ -8,14 +8,14 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1>Ajouter un Partenaire</h1>
+            <h1>Ajouter un Plateforme</h1>
           </div>
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
               <li class="breadcrumb-item">
                 <a href="#">Accueil</a>
               </li>
-              <li class="breadcrumb-item active">Ajoute d'un partenaire </li>
+              <li class="breadcrumb-item active">Ajoute d'une plateforme </li>
             </ol>
           </div>
         </div>
@@ -32,23 +32,35 @@
             <!-- jquery validation -->
             <div class="card card-secondary">
               <div class="card-header">
-                <h3 class="card-title"><small>Entrer toutes les informations du Partenaire</small></h3>
+                <h3 class="card-title"><small>Entrer toutes les informations de la Plateforme</small></h3>
               </div>
               
               <!-- /.card-header -->
               <!-- form start -->
               {{ form_start(form, {'method': 'POST'}) }}
                 <div class="card-body row">
-                  <div class="col-md-6">
+                  <div class="col-md-12">
                     <div class="form-group">
-                      <label for="exampleInputEmail1">Nom du Partenaire</label>
+                      <label for="exampleInputEmail1">Nom de la Plateforme</label>
                       <div class="input-group mb-3">
                         <div class="input-group-prepend">
                           <span class="input-group-text"><i class="fas fa-user"></i></span>
                         </div>
-                        {{ form_widget(form.nom_partenaire)}}
+                        {{ form_widget(form.nom)}}
                       </div>
-                      <span class="texte-light text-danger mt-0 ">{{ form_errors(form.nom_partenaire) }} </span>
+                      <span class="texte-light text-danger mt-0 ">{{ form_errors(form.nom) }} </span>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label for="exampleInputEmail1">Téléphone de la Plateforme</label>
+                      <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                          <span class="input-group-text"><i class="fas fa-user"></i></span>
+                        </div>
+                        {{ form_widget(form.num_tel)}}
+                      </div>
+                      <span class="texte-light text-danger mt-0 ">{{ form_errors(form.num_tel) }} </span>
                     </div>
                   </div>
                   <div class="col-md-6">
@@ -87,35 +99,6 @@
                       <span class="texte-light text-danger mt-0 ">{{form_errors(form.user.password.second) }} </span>
                     </div>
                   </div>
-
-                  <div class="col-md-6">
-                    <div class="form-group">
-                      <label for="exampleInputEmail1">Code Du Pays</label>
-                      <div class="input-group mb-3">
-                        <div class="input-group-prepend">
-                          <span class="input-group-text"><i class="fas fa-pencil-alt"></i></span>
-                        </div>
-                          <select class="form-control" name="code_pays" required>
-                            <option value="">Choisir</option>
-                            {% include 'includes/country_codes.html.twig' %}
-                          </select>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div class="col-md-6">
-                    <div class="form-group">
-                      <label for="exampleInputEmail1">Clé du Partenaire(3 caractères)</label>
-                      <div class="input-group mb-3">
-                        <div class="input-group-prepend">
-                          <span class="input-group-text"><i class="fas fa-lock"></i></span>
-                        </div>
-                        {{ form_widget(form.cle_partenaire)}} 
-                      </div>
-                      <span class="texte-light text-danger mt-0 "> {{form_errors(form.cle_partenaire)}} </span>
-                    </div>
-                  </div>
-
                 </div>
                 <!-- /.card-body -->
                 <div class="card-footer">

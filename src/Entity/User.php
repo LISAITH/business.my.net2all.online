@@ -294,23 +294,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getPlateforme(): ?Plateforme
-    {
-        return $this->plateforme;
-    }
-
-    public function setPlateforme(Plateforme $plateforme): self
-    {
-        // set the owning side of the relation if necessary
-        if ($plateforme->getUser() !== $this) {
-            $plateforme->setUser($this);
-        }
-
-        $this->plateforme = $plateforme;
-
-        return $this;
-    }
-
     /**
      * @return Collection<int, Entreprises>
      */
@@ -482,5 +465,25 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
+    public function getPlateforme(): ?Plateforme
+    {
+        return $this->plateforme;
+    }
 
+    public function setPlateforme(?Plateforme $plateforme): self
+    {
+        // unset the owning side of the relation if necessary
+        if ($plateforme === null && $this->plateforme !== null) {
+            $this->plateforme->setUser(null);
+        }
+
+        // set the owning side of the relation if necessary
+        if ($plateforme !== null && $plateforme->getUser() !== $this) {
+            $plateforme->setUser($this);
+        }
+
+        $this->plateforme = $plateforme;
+
+        return $this;
+    }
 }

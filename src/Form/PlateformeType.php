@@ -16,8 +16,11 @@ class PlateformeType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('nom_plateforme',TextType::class,[
+            ->add('nom',TextType::class,[
                 'attr' => ['class' => 'form-control', 'placeholder' => "Nom de la Plateforme"],
+            ])
+            ->add('num_tel',TextType::class,[
+                'attr' => ['class' => 'form-control', 'placeholder' => "Téléphone de la Plateforme"],
             ])
             // ->add('cle_partenaire',TextType::class,[
             //     'attr' => ['class' => 'form-control', 'placeholder' => "Clé du Plateforme"],
