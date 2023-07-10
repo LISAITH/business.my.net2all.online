@@ -9,4 +9,10 @@ class AppServices
         $bpayServerAddress = $_ENV['bpayLink'];
         return $bpayServerAddress;
     }
+
+    public function getBusinesServerAddress()
+    {
+        $buninesServerAddress = $_ENV['businessLink'];
+        return $buninesServerAddress;
+    }
 }

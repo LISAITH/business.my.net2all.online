@@ -11,6 +11,9 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Contracts\HttpClient\HttpClientInterface;
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use App\Services\AppServices;
 
 class ServiceController extends AuthController
 {   protected $type=4;
@@ -31,7 +34,7 @@ class ServiceController extends AuthController
     }
 
     #[Route('/addservice', name: 'add_service')]
-    public function create(Request $request,ManagerRegistry $doctrine): Response
+    public function create(Request $request,ManagerRegistry $doctrine, AppServices $appServices, HttpClientInterface $httpClient): Response
     {   // verifier si l'utilisateur est un partenaire
         if(!$this->checkAuthType()) return $this->forbidden();
 
@@ -53,6 +56,16 @@ class ServiceController extends AuthController
             $entityManager = $doctrine->getManager();
             $entityManager->persist($service);
             $entityManager ->flush();
+
+            $url = $appServices->getBpayServerAddress() . '/create/compte/Bpay/' . $service->getId() . '/7';
+			$response = $httpClient->request('POST', $url, [
+                'headers' => [
+                    'Content-Type: application/json',
+                    'Accept' => 'application/json',
+                ]
+            ]);
+            $content = $response->getContent();
+
             return $this->redirectToRoute('app_service');
         }
         return $this->render('service/create.html.twig', [

@@ -27,20 +27,17 @@ class AuthController extends AbstractController
       
     }
 
-    
-
     public function getUser():User{
         
         return $this->security->getUser();
     }
     
     public function checkAuth(){
-
         return $this->security->getUser()!=null;
     }
 
     public function checkAuthType($id=null){
-        if(!$this->checkAuth()) return  false;
+        if(!$this->checkAuth()) return false;
         if($id){
             return $this->security->getUser()->getType()->getId()===$id;
             }

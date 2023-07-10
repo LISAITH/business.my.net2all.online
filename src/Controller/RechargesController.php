@@ -16,6 +16,12 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
+use Symfony\Contracts\HttpClient\HttpClientInterface;
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use App\Services\AppServices;
 
 class RechargesController extends AuthController
 {
@@ -63,26 +69,6 @@ class RechargesController extends AuthController
     {
         if($this->checkAuthType()) return $this->forbidden();
         $type = $this->getUser()->getType()->getId();
-
-        if ($type === 1) {
-            $user=$this->getUser()->getParticuliers();
-        } elseif ($type === 2) {
-            $user=$this->getUser()->getDistributeur();
-        } elseif ($type === 3) {    
-            $user=$this->getUser()->getPartenaire();
-        } elseif ($type === 4) {
-            // Pas encore de solution
-        } elseif ($type === 5) {
-            $user=$this->getUser()->getPointVente();
-        } elseif ($type === 6) {
-            $user=$this->getUser()->getEntreprises();
-        }
-
-
-        dd($user);
-
-
-        
         $point_vente=$this->getUser()->getPointVente();
         $recharge=new Recharges();
         $form = $this->createForm(RechargeType::class);
@@ -110,6 +96,99 @@ class RechargesController extends AuthController
             return $this->redirectToRoute('app_recharges.credite_compte');
         }
         return $this->render('recharges/crediter_compte.html.twig', [
+            'controller_name' => 'RechargesController',
+            'form' => $form->createView()
+        ]);
+    }
+
+    #[Route('/recharges/credite/compte/bpay', name: 'app_recharges.credite_compte_bpay')]
+    public function credite_compte_bpay(Request $request,EntityManagerInterface $entityManager,FlashyNotifier $flashy, AppServices $appServices, HttpClientInterface $httpClient): Response
+    {
+        if($this->checkAuthType()) return $this->forbidden();
+        $type = $this->getUser()->getType()->getId();
+
+        if ($type === 1) {
+            $acteur=$this->getUser()->getParticuliers();
+            //$typeBeneficiaire = ;
+        } elseif ($type === 2) {
+            $acteur=$this->getUser()->getDistributeur();
+            $typeBeneficiaire = ["pointVente" => 5];
+        } elseif ($type === 3) {    
+            $acteur=$this->getUser()->getPartenaire();
+            $typeBeneficiaire = ["distributeur" => 2];
+        } elseif ($type === 4) {
+            // Pas encore de solution
+        } elseif ($type === 5) {
+            $acteur=$this->getUser()->getPointVente();
+            $typeBeneficiaire = ["entreprise" => 6,"particulier" => 1];
+        } elseif ($type === 6) {
+            $acteur=$this->getUser()->getEntreprises();
+            //$typeBeneficiaire = ;
+        }
+
+        $url = $appServices->getBpayServerAddress() . '/get/one/compte/Bpay/' . $acteur->getId() . '/' . $type;
+        $responseCompteBpay = $httpClient->request('GET', $url, [
+            'headers' => [
+                'Content-Type: application/json',
+                'Accept' => 'application/json',
+            ]
+        ]);
+        $compteBpay = $responseCompteBpay->getContent();
+        $compteBpay = json_decode($compteBpay, true);
+
+        $form = $this->createFormBuilder( null, ['attr' => ['id' => 'form']] )
+            ->add('solde',NumberType::class,[
+                'attr' => [
+                    'class' => 'form-control', 
+                    'placeholder' => "Solde disponible", 
+                    'disabled' => true
+                ],
+                'data' => $compteBpay["solde"],
+            ])
+            ->add('myNumeroCompte', HiddenType::class, [
+                'attr' => [
+                    'class' => 'form-control', 
+                    'placeholder' => "Numéro de compte"
+                ],
+                'data' => $compteBpay["numeroCompte"],
+                'mapped' => false,
+            ])
+            ->add('numero_compte',TextType::class,[
+                'attr' => ['class' => 'form-control', 'placeholder' => "Numéro de compte"],
+            ])
+            ->add('name_compte',TextType::class,[
+                'attr' => ['class' => 'form-control', 'placeholder' => "Nom & Prénom / Raison sociale", 'disabled' => true],
+            ])
+            ->add('montant',NumberType::class,[
+                'attr' => ['class' => 'form-control', 'placeholder' => "Montant",'min'=>'100','max'=>'2000000'],
+            ])
+
+            ->getForm();
+
+        $form->handleRequest($request);
+        $recharge=new Recharges();
+        // if ($form->isSubmitted() && $form->isValid()) {
+        //     $compte_ecash=$compte_ecashRepository->findOneBy(["numeroCompte"=>$form->get('numero_compte')->getData()]);
+        //     dd($compte_ecash);
+        //     $montant=(double)$form->get('montant')->getData();
+        //     if($montant>99 and $montant<=2000000){
+        //         // compte Ecash debite
+        //         $montant_debite=$compte_ecash->getSolde()+$montant;
+        //         $compte_ecash->setSolde($montant_debite);
+        //         $entityManager->persist($compte_ecash);
+
+        //         //Recharges store
+        //         $recharge->setPointVente($point_vente);
+        //         $recharge->setCompteEcash($compte_ecash);
+        //         $recharge->setMontant($montant);
+        //         $recharge->setDateRecharge(new \DateTime());
+        //         $entityManager->persist($recharge);
+        //     }
+        //     $entityManager->flush();
+        //     $flashy->success("Compte Ecash débiter avec succès");
+        //     return $this->redirectToRoute('app_recharges.credite_compte');
+        // }
+        return $this->render('recharges/crediter_compte_bpay.html.twig', [
             'controller_name' => 'RechargesController',
             'form' => $form->createView()
         ]);

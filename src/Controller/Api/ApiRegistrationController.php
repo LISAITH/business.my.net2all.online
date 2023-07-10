@@ -23,11 +23,82 @@ use Symfony\Component\Serializer\Encoder\JsonEncoder as EncoderJsonEncoder;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Validation;
+use Symfony\Contracts\HttpClient\HttpClientInterface;
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use App\Services\AppServices;
 
 class ApiRegistrationController extends AbstractController
 {
+    #[Route(path: '/api/users/register/{dataRequest}', name: 'api_register_user', methods: ['GET'])]
+    public function registerUser(string $dataRequest, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager, SerializerInterface $serializer, ServicesRepository $servicesRepository, TypeRepository $typeRepository, PaysRepository $paysRepository, UserRepository $userRepository, AppServices $appServices, HttpClientInterface $httpClient): Response
+    {
+        $data = json_decode($dataRequest);
+        if ($dataRequest == null) {
+            return $this->json(['message' => 'INVALID_REQUEST_DATA'], Response::HTTP_BAD_REQUEST);
+        }else{
+            $existedUser = $userRepository->findBy(["email"=>$data->email]);
+            if($existedUser){
+                return $this->json(['message' => 'EMAIL_ALREADY_EXIST'], Response::HTTP_BAD_REQUEST);
+            }else{
+                $existedUser = $userRepository->findBy(["numero"=>$data->num_tel]);
+                if($existedUser){
+                    return $this->json(['message' => 'PHONE_NUMBER_ALREADY_EXIST'], Response::HTTP_BAD_REQUEST);
+                }else{
+                    $pays = $paysRepository->find($data->pays_id);
+                    $type = $typeRepository->find($data->type);
+                    
+                    $user = new User(); // Create in user
+                    $user->setType($type);
+                    $user->setPassword(
+                        $userPasswordHasher->hashPassword(
+                            $user,
+                            $data->password
+                        )
+                    );
+                    $user->setEmail($data->email);
+                    $user->setNumero($data->num_tel);
+                    $user->setStatus(true);
+                    $entityManager->persist($user);
+
+                    if ($type->getId() == 1) /*Particular account*/{
+                        $acteur = new Particuliers();
+                    } else if ($type->getId() == 6)/*Enterprise account*/ {
+                        $acteur = new Entreprises();
+                        $acteur->setNomEntreprise($data->nom_entreprise);
+                        $acteur->setUrlImage($data->url_image??"");
+                    }
+
+                    $acteur->setNom($data->nom);
+                    $acteur->setPrenoms($data->prenoms);
+                    $acteur->setNumTel($data->num_tel);
+                    $acteur->setPays($pays);
+                    $acteur->setUser($user);
+                    
+                    $entityManager->persist($acteur);
+
+                    try {
+                        $entityManager->flush();
+                        $url = $appServices->getBpayServerAddress() . '/create/compte/Bpay/' . $acteur->getId() . '/' . $type->getId();
+                        $response = $httpClient->request('POST', $url, [
+                            'headers' => [
+                                'Content-Type: application/json',
+                                'Accept' => 'application/json',
+                            ]
+                        ]);
+                        $content = $response->getContent();
+
+                        return $this->json(['message' => 'RESOURCE_CREATED'], Response::HTTP_CREATED);            
+                    }catch (Exception){
+                        return $this->json(['message' => 'ERROR'], Response::HTTP_INTERNAL_SERVER_ERROR);
+                    }
+                }
+            }            
+        }
+    }
+
+
     #[Route(path: '/api/users/register', name: 'api_register', methods: ['POST'])]
-    public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager, SerializerInterface $serializer, ServicesRepository $servicesRepository, TypeRepository $typeRepository, PaysRepository $paysRepository, UserRepository $userRepository): Response
+    public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager, SerializerInterface $serializer, ServicesRepository $servicesRepository, TypeRepository $typeRepository, PaysRepository $paysRepository, UserRepository $userRepository, AppServices $appServices, HttpClientInterface $httpClient): Response
     {
 		
         /// Create an new validator
@@ -170,48 +241,36 @@ class ApiRegistrationController extends AbstractController
         $pays = $paysRepository->find($data->pays_id);
 
         /// Generate new accountNumber for user's CompteEcash
-        $accountNumber = $this->getRandomText(10);
+        // $accountNumber = $this->getRandomText(10);
 
-        /// Create user's CompteEcash
-        $ecash = new CompteEcash();
-        $ecash->setNumeroCompte($accountNumber);
-        $ecash->setSolde(0);
+        // /// Create user's CompteEcash
+        // $ecash = new CompteEcash();
+        // $ecash->setNumeroCompte($accountNumber);
+        // $ecash->setSolde(0);
 
         /// Check if registration request is for Enterprise account or Particular account
         if ($type->getId() == 1) /*Particular account*/{
             /// Create new particular
-            $particular = new Particuliers();
-            $particular->setNom($data->nom);
-            $particular->setPrenoms($data->prenoms);
-            $particular->setNumTel($data->num_tel);
-            $particular->setUser($user);
-            $particular->setPays($pays);
-
-            // Set [CompteEcash]
-            $ecash->setParticulier($particular);
-
-            /// Save particular to database
-            $entityManager->persist($particular);
+            $acteur = new Particuliers();
+            $acteur->setNom($data->nom);
+            $acteur->setPrenoms($data->prenoms);
+            $acteur->setNumTel($data->num_tel);
+            $acteur->setUser($user);
+            $acteur->setPays($pays);
+            $entityManager->persist($acteur);
 
         } else if ($type->getId() == 6)/*Enterprise account*/ {
             /// Create new Enterprise
-            $enterprise = new Entreprises();
-            $enterprise->setUser($user);
-            $enterprise->setNumTel($data->num_tel);
-            $enterprise->setNom($data->nom);
-            $enterprise->setPrenoms($data->prenoms);
-            $enterprise->setNomEntreprise($data->nom_entreprise);
-            $enterprise->setUrlImage($data->url_image??"");
-            $enterprise->setPays($pays);
-
-            // Set [CompteEcash]
-            $ecash->setEntreprise($enterprise);
-
-            /// Save enterprise to database
-            $entityManager->persist($enterprise);
+            $acteur = new Entreprises();
+            $acteur->setUser($user);
+            $acteur->setNumTel($data->num_tel);
+            $acteur->setNom($data->nom);
+            $acteur->setPrenoms($data->prenoms);
+            $acteur->setNomEntreprise($data->nom_entreprise);
+            $acteur->setUrlImage($data->url_image??"");
+            $acteur->setPays($pays);
+            $entityManager->persist($acteur);
         }
-
-        $entityManager->persist($ecash);
 
         /// Get all services
         $services = $servicesRepository->findAll();
@@ -228,8 +287,19 @@ class ApiRegistrationController extends AbstractController
             /// Save SousCompte to database
             $entityManager->persist($sousCompte);
         }
+
         try {
             $entityManager->flush();
+
+            $url = $appServices->getBpayServerAddress() . '/create/compte/Bpay/' . $acteur->getId() . '/' . $type->getId();
+			$response = $httpClient->request('POST', $url, [
+                'headers' => [
+                    'Content-Type: application/json',
+                    'Accept' => 'application/json',
+                ]
+            ]);
+            $content = $response->getContent();
+
         }catch (Exception){
             return new JsonResponse(
                 [
