@@ -29,8 +29,8 @@ class Partenaire
      * @Assert\Length(
      * min=2,
      * max=40,
-     * minMessage="le nom doit contenir au moins {{limit}} caractères",
-     * minMessage="le nom doit contenir au plus {{limit}} caractères")
+     * minMessage="le nom doit contenir au moins {{ limit }} caractères",
+     * minMessage="le nom doit contenir au plus {{ limit }} caractères")
      * @Groups({"user:read", "user:write"})
      */
     private $nom_partenaire;
@@ -115,7 +115,6 @@ class Partenaire
         return $this;
     }
 
-
     /**
      * @return Collection<int, Distributeur>
      */
@@ -144,5 +143,10 @@ class Partenaire
         }
 
         return $this;
+    }
+
+    public function __toString()
+    {
+        return $this->nom_partenaire;
     }
 }

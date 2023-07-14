@@ -1,0 +1,120 @@
+{% extends 'base.html.twig' %} 
+
+    {% block title %}
+      Créditer un partenaire
+    {% endblock %}
+    
+    {% block sidebar %}
+      {% include "layouts/sidebar/point_vente.html.twig" %}
+    
+    {% endblock %}
+    
+    {% block body %}
+      <!-- Content Wrapper. Contains page content -->
+      <div class="content-wrapper">
+        <!-- Content Header (Page header) -->
+        <section class="content-header">
+          <div class="container-fluid">
+            <div class="row mb-2">
+              <div class="col-sm-6">
+                <h1>Créditer un partenaire</h1>
+              </div>
+              <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                  <li class="breadcrumb-item">
+                    <a href="#">Accueil</a>
+                  </li>
+                  <li class="breadcrumb-item active">Créditer un partenaire </li>
+                </ol>
+              </div>
+            </div>
+          </div>
+          <!-- /.container-fluid -->
+        </section>
+    
+        <!-- Main content -->
+        <section class="content">
+          <div class="container-fluid">
+            <div class="row">
+              <!-- left column -->
+              <div class="col-md-12">
+                <!-- jquery validation -->
+                <div class="card card-secondary">
+                  <div class="card-header">
+                    <h3 class="card-title"><small>Créditer un partenaire</small></h3>
+                  </div>
+                  
+                  <!-- /.card-header -->
+                  <!-- form start -->
+                  {{ form_start(form, {'method': 'POST'}) }}
+                    <div class="card-body row">
+                        <div class="col-md-10">
+                            <div class="form-group">
+                            <label for="exampleInputEmail1">Partenaire</label>
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="fas fa-pencil-alt"></i></span>
+                                </div>
+                                {{ form_widget(form.destinataire)}}
+                            </div>
+                            <span class="texte-light text-danger mt-0 ">{{form_errors(form.destinataire) }} </span>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="form-group">
+                            <label for="exampleInputEmail1"> Montant</label>
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="fas fa-pencil-alt"></i></span>
+                                </div>
+                            {# <input type="number" min="100" max="2000000" name="montant" class="form-control" placeholder="Montant" required> #}
+                            {{ form_widget(form.montant)}}
+                            </div>
+                            <span class="texte-light text-danger mt-0 ">{{form_errors(form.montant) }} </span>
+                            </div>
+                        </div>
+    
+                    </div>
+                    <!-- /.card-body -->
+                    <div class="card-footer">
+                      <button type="submit" class="btn btn-primary">Créditer</button>
+                    </div>
+                  {{ form_end(form) }}
+                </div>
+                <!-- /.card -->
+              </div>
+              <!-- /.col (left) -->
+              <!-- right column -->
+              <!-- /.col (right) -->
+            </div>
+            <!-- /.row -->
+          </div>
+          <!-- /.container-fluid -->
+        </section>
+        <!-- /.content -->
+      </div>
+      <!-- /.content-wrapper -->
+    {% endblock %}
+    
+    {% block javascripts %}
+      <script>
+        $('#form_destinataire').select2({
+            dropdownParent: $("#exampleModal"),
+            theme: "bootstrap",
+            placeholder: "Recherchez un partenaire",
+            minimumInputLength: 3,
+            maximumSelectionLength: 30,
+            language: {
+                inputTooShort: function () {
+                    return "Veuillez saisir au moins 3 caractères ...";
+                },
+                noResults: function () {
+                    return "Aucun résultat trouvé";
+                },
+                searching: function () {
+                    return "Recherche en cours";
+                }
+            },
+        });
+      </script>
+    {% endblock %}

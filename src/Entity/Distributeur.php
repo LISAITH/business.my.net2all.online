@@ -32,8 +32,8 @@ class Distributeur
      * @Length(
      * min=2,
      * max=40,
-     * minMessage="le nom doit contenir au moins {{limit}} caractères",
-     * maxMessage="le nom doit contenir au plus {{limit}} caractères")
+     * minMessage="le nom doit contenir au moins {{ limit }} caractères",
+     * maxMessage="le nom doit contenir au plus {{ limit }} caractères")
      */
     private $nom_distributeur;
 
@@ -182,5 +182,10 @@ class Distributeur
         $this->partenaire = $partenaire;
 
         return $this;
+    }
+
+    public function __toString()
+    {
+        return $this->nom_distributeur;
     }
 }

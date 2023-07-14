@@ -44,7 +44,6 @@ class ServiceController extends AuthController
         $form = $this->createForm(ServiceType::class, $service);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            
             $file=$form->get('logo')->getData();
             if(isset($file)){
                 $filename=$form->get('libelle')->getData().'.'.$file->getClientOriginalExtension();;
@@ -57,14 +56,16 @@ class ServiceController extends AuthController
             $entityManager->persist($service);
             $entityManager ->flush();
 
-            $url = $appServices->getBpayServerAddress() . '/create/compte/Bpay/' . $service->getId() . '/7';
-			$response = $httpClient->request('POST', $url, [
-                'headers' => [
-                    'Content-Type: application/json',
-                    'Accept' => 'application/json',
-                ]
-            ]);
-            $content = $response->getContent();
+            if($form->get('paiement_service')->getData()){
+                $url = $appServices->getBpayServerAddress() . '/create/compte/Bpay/' . $service->getId() . '/7';
+                $response = $httpClient->request('POST', $url, [
+                    'headers' => [
+                        'Content-Type: application/json',
+                        'Accept' => 'application/json',
+                    ]
+                ]);
+                $content = $response->getContent();
+            }
 
             return $this->redirectToRoute('app_service');
         }

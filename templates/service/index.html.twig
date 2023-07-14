@@ -74,7 +74,11 @@
                         {% if service.getEtat %}
                            <a href="{{path("service.desactive",{id:service.getId})}}" class="btn btn-danger" role="button">Désactiver</a> 
                         {% else %}
-                          <a href="{{path("service.active",{id:service.getId})}}" class="btn btn-primary" role="button">Activer </a> 
+                            <a href="{{path("service.active",{id:service.getId})}}" class="btn btn-primary" role="button">Activer </a> 
+                        {% endif %}
+
+                        {% if service.isPaiementService %}
+                           <a href="#" class="btn btn-warning" role="button">Créditer solde</a> 
                         {% endif %}
                     </td>
                   </tr>
@@ -100,7 +104,21 @@
     <!-- /.content -->
   </div>
 
-</script>
+  {# <!-- Modal -->
+  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Plan d'action</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-footer">
+                <button id="crediterSoldeSer" type="button" class="btn btn-primary btn-sm">Créditer</button>
+                <button id="fermer" type="button" class="btn btn-sm btn-default">Fermer</button>
+            </div>
+        </div>
+    </div>
+  </div> #}
 {% endblock %}
 
 

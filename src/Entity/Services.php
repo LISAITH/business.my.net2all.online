@@ -85,6 +85,11 @@ class Services
      */
     private $required_installation;
 
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $paiement_service;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -182,6 +187,18 @@ class Services
     public function setRequiredInstallation(?bool $required_installation): self
     {
         $this->required_installation = $required_installation;
+
+        return $this;
+    }
+
+    public function isPaiementService(): ?bool
+    {
+        return $this->paiement_service;
+    }
+
+    public function setPaiementService(?bool $paiement_service): self
+    {
+        $this->paiement_service = $paiement_service;
 
         return $this;
     }

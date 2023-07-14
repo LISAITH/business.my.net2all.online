@@ -136,24 +136,22 @@
     
     {% block javascripts %}
       <script>
-        const numberAccount = document.getElementById('recharge_numero_compte');
-        numberAccount.addEventListener('input', () => {
+        var numberAccount = document.getElementById('form_numero_compte');
+        numberAccount.addEventListener('blur', function() {
           $.ajax({
-                    url: '{{ path('searchNameAccount') }}',
-                    type: 'POST',
-                    dataType : 'json',
-                    data : {
-                        'numero_compte' : numberAccount.value
-                    },
-                    success:function (data){
-              $('#recharge_name_compte').val(data.name);
-                        $('#recharge_phone_compte').val(data.phone);
-              
-                    },
+            url: '{{ path('searchNameAccount') }}',
+            type: 'POST',
+            dataType : 'json',
+            data : {
+                'numero_compte' : numberAccount.value
+            },
+            success:function (data){
+                $('#form_name_compte').val(data.name);
+            },
             error: function(error) {
                 console.log('error');
             }
-                });
+          });
         });
       </script>
     {% endblock %}

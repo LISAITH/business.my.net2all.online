@@ -53,6 +53,13 @@ class ServiceType extends AbstractType
             ],
             'attr' => ['class' => 'form-control',],
             ])
+            ->add('paiement_service',ChoiceType::class,[  'choices'  => [
+                "Service de paiement"=>"",
+                "Oui"=>"1",
+                "Non"=>"0"
+            ],
+            'attr' => ['class' => 'form-control',],
+            ])
         ;
     }
 

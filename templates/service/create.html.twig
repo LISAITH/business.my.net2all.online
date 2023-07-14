@@ -65,19 +65,19 @@
                         </div>
                       </div>
                 </div>
-                 <div class="col-md-6">
+                <div class="col-md-6">
                     <div class="form-group">
                         <label for="exampleInputEmail1">Url du site</label>
                         <div class="input-group mb-3">
-                        <div class="input-group-prepend">
-                          <span class="input-group-text"><i class="fas fa-edit"></i></span>
-                        </div>
-                        {{ form_widget(form.url)}}
+                          <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="fas fa-edit"></i></span>
+                          </div>
+                          {{ form_widget(form.url)}}
                         </div>
                     </div>
                       <div class="texte-light text-danger mt-0 ">{{ form_errors(form.url) }} </div>
                 </div>
-                 <div class="col-md-6">
+                <div class="col-md-6">
                     <div class="form-group">
                         <label for="exampleInputEmail1">Url de l'application</label>
                         <div class="input-group mb-3">
@@ -113,7 +113,7 @@
                     </div>
                       <div class="texte-light text-danger mt-0 ">{{ form_errors(form.required_installation) }} </div>
                 </div>
-                 <div class="col-md-6">
+                <div class="col-md-6">
                     <div class="form-group">
                         <label for="exampleInputEmail1">Description du service</label>
                         <div class="input-group mb-3">
@@ -124,6 +124,18 @@
                         </div>
                     </div>
                       <div class="texte-light text-danger mt-0 ">{{ form_errors(form.description) }} </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="exampleInputEmail1">Paiement</label>
+                        <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                          <span class="input-group-text"><i class="fas fa-edit"></i></span>
+                        </div>
+                        {{ form_widget(form.paiement_service)}}
+                        </div>
+                    </div>
+                      <div class="texte-light text-danger mt-0 ">{{ form_errors(form.paiement_service) }} </div>
                 </div>
                 </div>
                 <!-- /.card-body -->

@@ -264,5 +264,8 @@ class PointVente
         return $this;
     }
 
-   
+    public function __toString()
+    {
+        return $this->nom_point_vente;
+    }
 }
