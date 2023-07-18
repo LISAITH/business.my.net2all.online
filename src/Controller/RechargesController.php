@@ -325,6 +325,7 @@ class RechargesController extends AuthController
         }else{
             $name = "";
         }
+
         $results = [
             'name' => $name,
         ];

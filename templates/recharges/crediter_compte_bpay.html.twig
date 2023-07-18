@@ -137,31 +137,24 @@
     {% block javascripts %}
       <script>
         var numberAccount = document.getElementById('form_numero_compte');
+        let destinataire = "";
         numberAccount.addEventListener('blur', function() {
-          $.ajax({
-            url: '{{ path('searchNameAccount') }}',
-            type: 'POST',
-            dataType : 'json',
-            data : {
-                'numero_compte' : numberAccount.value
-            },
-            success:function (data){
-                $('#form_name_compte').val(data.name);
-            },
-            error: function(error) {
-                console.log('error');
-            }
-          });
+          if(numberAccount.value){
+            getAccountName();
+          }else{
+            $('#form_name_compte').val("");
+          }
         });
-
 
         $('#save').on('click', function () {
           let solde = $('#form_solde').val();
           let montant = $('#form_montant').val();
-          let destinataire = $('#form_name_compte').val();
-
+          if(numberAccount.value){
+            getAccountName();
+          }
+          
           if (destinataire) {
-            if (montant) {
+            if (montant && montant > 0) {
               if (solde < montant) {
                 changeClass();
                 $("#msg").text("Fonds insuffisant! Vous disposez pas d'assez de fond pour effectuer cette transaction!");
@@ -178,11 +171,45 @@
           }
     
         })
-    
+
+
+        async function getAccountName() {
+          numberAccount = document.getElementById('form_numero_compte');
+          try {
+            var numberAccount = numberAccount.value;
+            var accountName = await searchNameAccount(numberAccount);
+            $('#form_name_compte').val(accountName);
+            destinataire = accountName;            
+          } catch (error) {
+            console.error(error);
+          }
+        }
+
+        function searchNameAccount(numberAccount) {
+          return new Promise(function(resolve, reject) {
+            $.ajax({
+              url: '{{ path('searchNameAccount') }}',
+              type: 'POST',
+              dataType: 'json',
+              data: {
+                'numero_compte': numberAccount
+              },
+              success: function(data) {
+                resolve(data.name);
+              },
+              error: function(xhr, textStatus, errorThrown) {
+                reject(errorThrown);
+              }
+            });
+          });
+        }
+
         function changeClass(){
           var element = document.querySelector(".card");
           element.classList.remove("card-secondary");
           element.classList.add("card-danger");
-        }
+        }        
       </script>
     {% endblock %}
+
+    
