@@ -242,7 +242,6 @@ class RechargesController extends AuthController
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-
             if($saisiNumCompte){
                 $url = $appServices->getBpayServerAddress() . '/get/one/compte/Bpay/by/number/account/'. $form->get('numero_compte')->getData();
                 $responseCompteBpay = $httpClient->request('GET', $url, [

@@ -1,124 +1,164 @@
-{% extends 'base.html.twig' %} 
+{% extends 'base.html.twig' %}
 
-    {% block title %}
-      Créditer un {{ title }}
-    {% endblock %}
-    
-    {% block sidebar %}
-      {% include "layouts/sidebar/point_vente.html.twig" %}
-    
-    {% endblock %}
-    
-    {% block body %}
-      <!-- Content Wrapper. Contains page content -->
-      <div class="content-wrapper">
-        <!-- Content Header (Page header) -->
-        <section class="content-header">
-          <div class="container-fluid">
-            <div class="row mb-2">
-              <div class="col-sm-6">
-                <h1>Créditer un {{ title }}</h1>
-              </div>
-              <div class="col-sm-6">
-                <ol class="breadcrumb float-sm-right">
-                  <li class="breadcrumb-item">
-                    <a href="#">Accueil</a>
-                  </li>
-                  <li class="breadcrumb-item active">Créditer un {{ title }} </li>
-                </ol>
-              </div>
-            </div>
-          </div>
-          <!-- /.container-fluid -->
-        </section>
-    
-        <!-- Main content -->
-        <section class="content">
-          <div class="container-fluid">
-            <div class="row">
-              <!-- left column -->
-              <div class="col-md-12">
-                <!-- jquery validation -->
-                <div class="card card-secondary">
-                  <div class="card-header">
-                    <h3 class="card-title"><small>Créditer un {{ title }}</small></h3>
-                  </div>
-                  
-                  <!-- /.card-header -->
-                  <!-- form start -->
-                  {{ form_start(form, {'method': 'POST'}) }}
-                    <div class="card-body row">
-                        <div class="col-md-2">
-                            <div class="form-group">
-                            <label for="exampleInputEmail1">Solde disponible</label>
-                            <div class="input-group mb-3">
-                                <div class="input-group-prepend">
-                                <span class="input-group-text"><i class="fas fa-pencil-alt"></i></span>
-                                </div>
-                                {{ form_widget(form.solde)}}
-                            </div>
-                            <span class="texte-light text-danger mt-0 ">{{form_errors(form.solde) }} </span>
-                            </div>
-                        </div>
-                        <div class="col-md-8">
-                          <div class="form-group">
-                            <label for="exampleInputEmail1">{{ title }}</label>
-                            <div class="input-group mb-3">
-                                <div class="input-group-prepend">
-                                <span class="input-group-text"><i class="fas fa-pencil-alt"></i></span>
-                                </div>
-                                {{ form_widget(form.destinataire)}}
-                            </div>
-                            <span class="texte-light text-danger mt-0 ">{{form_errors(form.destinataire) }} </span>
-                            </div>
-                        </div>
-                        <div class="col-md-2">
-                          <div class="form-group">
-                            <label for="exampleInputEmail1"> Montant</label>
-                            <div class="input-group mb-3">
-                              <div class="input-group-prepend">
-                                <span class="input-group-text"><i class="fas fa-pencil-alt"></i></span>
-                              </div>
-                            {# <input type="number" min="100" max="2000000" name="montant" class="form-control" placeholder="Montant" required> #}
-                            {{ form_widget(form.montant)}}
-                            </div>
-                            <span class="texte-light text-danger mt-0 ">{{form_errors(form.montant) }} </span>
-                          </div>
-                      </div>
-    
-                    </div>
-                    <!-- /.card-body -->
-                    <div class="card-footer">
-                      <button type="submit" class="btn btn-primary" id="save">Créditer</button>
-                    </div>
-                  {{ form_end(form) }}
-                </div>
-                <!-- /.card -->
-              </div>
-              <!-- /.col (left) -->
-              <!-- right column -->
-              <!-- /.col (right) -->
-            </div>
-            <!-- /.row -->
-          </div>
-          <!-- /.container-fluid -->
-        </section>
-        <!-- /.content -->
-      </div>
-      <!-- /.content-wrapper -->
-    {% endblock %}
-    
-    {% block javascripts %}
-      <script>
-        $('#save').on('click', function (){
-          console.log("ok");
-          let solde = $('#form_solde').val();
-          let montant = $('#form_montant').val();
-          if(solde < montant){
-            warning_noti("Fonds insuffisant! Vous disposez pas d'assez de fond pour effectuer cette transaction!");
-          }else{
-            $('form').submit();
-          }
-			  })
-      </script>
-    {% endblock %}
+{% block title %}
+	Créditer un
+	{{ title }}
+{% endblock %}
+
+{% block sidebar %}
+	{% include "layouts/sidebar/point_vente.html.twig" %}
+
+{% endblock %}
+
+{% block body %}
+	<input type="hidden" id="title" name="title" value="{{ title }}">
+	<!-- Content Wrapper. Contains page content -->
+	<div
+		class="content-wrapper">
+		<!-- Content Header (Page header) -->
+		<section class="content-header">
+			<div class="container-fluid">
+				<div class="row mb-2">
+					<div class="col-sm-6">
+						<h1>Créditer un
+							{{ title }}</h1>
+					</div>
+					<div class="col-sm-6">
+						<ol class="breadcrumb float-sm-right">
+							<li class="breadcrumb-item">
+								<a href="#">Accueil</a>
+							</li>
+							<li class="breadcrumb-item active">Créditer un
+								{{ title }}
+							</li>
+						</ol>
+					</div>
+				</div>
+			</div>
+			<!-- /.container-fluid -->
+		</section>
+
+		<!-- Main content -->
+		<section class="content">
+			<div class="container-fluid">
+				<div
+					class="row">
+					<!-- left column -->
+					<div
+						class="col-md-12">
+						<!-- jquery validation -->
+						<div class="card card-secondary">
+							<div class="card-header">
+								<h3 class="card-title">
+									<small id="msg">Créditer un {{ title }}</small>
+								</h3>
+							</div>
+
+							<!-- /.card-header -->
+							<!-- form start -->
+							{{ form_start(form, {'method': 'POST'}) }}
+							<div class="card-body row">
+								<div class="col-md-2">
+									<div class="form-group">
+										<label for="exampleInputEmail1">Solde disponible</label>
+										<div class="input-group mb-3">
+											<div class="input-group-prepend">
+												<span class="input-group-text">
+													<i class="fas fa-pencil-alt"></i>
+												</span>
+											</div>
+											{{ form_widget(form.solde)}}
+										</div>
+										<span class="texte-light text-danger mt-0 ">{{form_errors(form.solde) }}
+										</span>
+									</div>
+								</div>
+								<div class="col-md-8">
+									<div class="form-group">
+										<label for="exampleInputEmail1">{{ title }}</label>
+										<div class="input-group mb-3">
+											<div class="input-group-prepend">
+												<span class="input-group-text">
+													<i class="fas fa-pencil-alt"></i>
+												</span>
+											</div>
+											{{ form_widget(form.destinataire)}}
+										</div>
+										<span class="texte-light text-danger mt-0 ">{{form_errors(form.destinataire) }}
+										</span>
+									</div>
+								</div>
+								<div class="col-md-2">
+									<div class="form-group">
+										<label for="exampleInputEmail1">
+											Montant</label>
+										<div class="input-group mb-3">
+											<div class="input-group-prepend">
+												<span class="input-group-text">
+													<i class="fas fa-pencil-alt"></i>
+												</span>
+											</div>
+											{# <input type="number" min="100" max="2000000" name="montant" class="form-control" placeholder="Montant" required> #}
+											{{ form_widget(form.montant)}}
+										</div>
+										<span class="texte-light text-danger mt-0 ">{{form_errors(form.montant) }}
+										</span>
+									</div>
+								</div>
+
+							</div>
+							<!-- /.card-body -->
+							<div class="card-footer">
+								<button type="button" class="btn btn-primary" id="save">Créditer</button>
+							</div>
+							{{ form_end(form) }}
+						</div>
+						<!-- /.card -->
+					</div>
+					<!-- /.col (left) -->
+				<!-- right column -->
+					<!-- /.col (right) -->
+				</div>
+				<!-- /.row -->
+			</div>
+			<!-- /.container-fluid -->
+		</section>
+		<!-- /.content -->
+	</div>
+	<!-- /.content-wrapper -->
+{% endblock %}
+
+{% block javascripts %}
+	<script>
+		$('#save').on('click', function () {
+			let solde = $('#form_solde').val();
+			let montant = $('#form_montant').val();
+			let destinataire = $('#form_destinataire').val();
+			if (destinataire) {
+				if (montant) {
+					if (solde < montant) {
+						changeClass();
+						$("#msg").text("Fonds insuffisant! Vous disposez pas d'assez de fond pour effectuer cette transaction!");
+					} else {
+						$('form').submit();
+					}
+				} else {
+					changeClass();
+					$("#msg").text("Veuillez saisir le montant à créditer!");
+				}
+			} else {
+				changeClass();
+				title = $("#title").val()
+				msg = "Veuillez sélectionner un "+title+"!";
+				$("#msg").text(msg);
+			}
+
+		})
+
+		function changeClass(){
+			var element = document.querySelector(".card");
+			element.classList.remove("card-secondary");
+			element.classList.add("card-danger");
+		}
+	</script>
+{% endblock %}

@@ -41,7 +41,7 @@
                 <!-- jquery validation -->
                 <div class="card card-secondary">
                   <div class="card-header">
-                    <h3 class="card-title"><small>Créditer un compte</small></h3>
+                    <h3 class="card-title"><small id="msg">Créditer un compte</small></h3>
                   </div>
                   
                   <!-- /.card-header -->
@@ -115,7 +115,7 @@
                     </div>
                     <!-- /.card-body -->
                     <div class="card-footer">
-                      <button type="submit" class="btn btn-primary">Créditer</button>
+                      <button type="button" class="btn btn-primary" id="save">Créditer</button>
                     </div>
                   {{ form_end(form) }}
                 </div>
@@ -153,5 +153,36 @@
             }
           });
         });
+
+
+        $('#save').on('click', function () {
+          let solde = $('#form_solde').val();
+          let montant = $('#form_montant').val();
+          let destinataire = $('#form_name_compte').val();
+
+          if (destinataire) {
+            if (montant) {
+              if (solde < montant) {
+                changeClass();
+                $("#msg").text("Fonds insuffisant! Vous disposez pas d'assez de fond pour effectuer cette transaction!");
+              } else {
+                $('form').submit();
+              }
+            } else {
+              changeClass();
+              $("#msg").text("Veuillez saisir le montant à créditer!");
+            }
+          } else {
+            changeClass();
+            $("#msg").text("Ce compte n'existe pas!");
+          }
+    
+        })
+    
+        function changeClass(){
+          var element = document.querySelector(".card");
+          element.classList.remove("card-secondary");
+          element.classList.add("card-danger");
+        }
       </script>
     {% endblock %}
