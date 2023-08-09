@@ -255,8 +255,8 @@ class EnseignesController extends AuthController
 
         $ens =$ensRepo->find($id);
         $is_valid=$ens->isIs360Installed()?: false;
+        
         if(!$is_valid){
-			
             foreach($service_will_be_activated_id as $s_id){
                 $api=new ApiServices();
                 $api->setIdServices($s_id);
@@ -269,14 +269,6 @@ class EnseignesController extends AuthController
                 $em->flush();
             }
 			
-			/*
-            $ens->setIs360Installed(true);
-            $em->persist($ens);
-            $em->flush();
-			*/
-			
-			//communaute
-			
 			foreach($communaute_will_be_activated_id as $s_id){
                 $api=new ApiCommunautes();
                 $api->setIdServices($s_id);
@@ -288,11 +280,6 @@ class EnseignesController extends AuthController
                 $em->persist($api);
                 $em->flush();
             }
-
-            $ens->setIs360Installed(true);
-			$em=$doctrine->getManager();
-            $em->persist($ens);
-            $em->flush();
         }
 		
 		
