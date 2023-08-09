@@ -84,13 +84,13 @@ class Enseignes
      * @ORM\Column(type="boolean", nullable=true)
      */
     #[Groups(["getEnseigneWithEnterprise"])]
-    private $is_validated;
+    private $is_validated = false;
 
     /**
      * @ORM\Column(type="boolean", nullable=true)
      */
     #[Groups(["getEnseigneWithEnterprise"])]
-    private $is_360_installed;
+    private $is_360_installed = false;
 
     /**
      * @ORM\OneToOne(targetEntity=Prospections::class, mappedBy="enseigne", cascade={"persist", "remove"})
