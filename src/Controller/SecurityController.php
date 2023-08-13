@@ -14,12 +14,21 @@ use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Security\Http\Authentication\UserAuthenticatorInterface;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Form\Extension\Core\Type\EmailType;
+use Doctrine\Persistence\ManagerRegistry;
+use Symfony\Bridge\Twig\Mime\TemplatedEmail;
+use Symfony\Component\Mime\Email;
+use Symfony\Component\Mime\Address;
+use Symfony\Component\Mailer\MailerInterface;
 
 class SecurityController extends AbstractController
 {
+    private MailerInterface $mailer;
 
-
-
+    public function __construct(MailerInterface $mailer)
+    {
+        $this->mailer = $mailer;
+    }
 
     #[Route(path: '/api/login', name: 'api_login', methods: ['POST'])]
     public function loginUser(Request $request)
@@ -80,6 +89,55 @@ class SecurityController extends AbstractController
         }
        
         return $this->render('security/login.html.twig');
+    }
+
+    /**
+     * @Route("/reset/password", name="app_reset_password")
+     */
+    public function resetPassword(ManagerRegistry $doctrine,Request $request,UserPasswordHasherInterface $hasher,UserRepository $repositoryUser): Response 
+    {
+        $entityManager = $doctrine->getManager();
+        $form = $this->createFormBuilder( null, ['attr' => ['id' => 'form']] )
+        ->add('email',EmailType::class,[
+            'attr' => ['class' => 'form-control', 'placeholder' => "Votre Email"],
+        ])
+        ->getForm();
+        $form->handleRequest($request);
+        if ($form->isSubmitted()){
+            $mail = $form->get('email')->getData();
+            if (filter_var($mail, FILTER_VALIDATE_EMAIL)) {
+                $domain = explode('@', $mail)[1];
+                if (checkdnsrr($domain, 'MX')) {
+                    $user = $repositoryUser->findOneBy(["email" => $mail]);
+                    if($user){
+                        $password = $this->getNewPass(8);
+                        $user->setPassword($hasher->hashPassword($user,$password));
+                        $user->setReset($password);
+                        $entityManager->persist($user);
+                        $entityManager ->flush();
+                        $data = [
+                            'nom' => null,
+                            'password' => $password,
+                            'mail' => $mail
+                        ];
+                        $this->sendMailResetPassword($data);
+                        $this->addFlash('success', 'Veuillez consulter votre boite pour vous connecter avec votre noveau mot de passe!');
+                        return $this->redirectToRoute('app_login');
+                    }else{
+                        $this->addFlash('warning', 'L\'adresse e-mail n\'existe pas.');
+                    }
+                } else {
+                    $this->addFlash('warning', 'L\'adresse e-mail n\'existe pas.');
+                }
+            } else {
+                $this->addFlash('warning', 'Adresse e-mail invalide.');
+            }
+            return $this->redirectToRoute('app_reset_password');
+        }
+        
+        return $this->render('security/reset_password.html.twig', [
+            'form' => $form->createView()
+        ]);
     }
 
 
@@ -160,9 +218,7 @@ class SecurityController extends AbstractController
     //     return $this->render('security/login.html.twig', ['last_username' => $lastUsername, 'error' => $error]);
     // 
         return $this->redirectToRoute("app_login");
-}
-
-
+    }
 
     /**
      * @Route("/logout", name="app_logout")
@@ -170,5 +226,30 @@ class SecurityController extends AbstractController
     public function logout(): void
     {
         throw new \LogicException('This method can be blank - it will be intercepted by the logout key on your firewall.');
+    }
+
+    private function sendMailResetPassword($data)
+    {
+        $email = (new TemplatedEmail())
+            ->from(new Address('no-reply@inspections.bj', 'NET2ALL'))
+            ->to($data['mail'])
+            ->subject('Réinitialisation Mot de Passe')
+            ->htmlTemplate('mail/reset_password.html.twig')
+            ->context([
+                'nom' => $data['nom'],
+                'password' => $data['password'],
+            ]);
+        $this->mailer->send($email);
+    }
+
+    protected function getNewPass($n): string
+    {
+        $characters = '0123456789ABCDEFGHILKMNOPQRSTUVWXYZ';
+        $randomString = '';
+        for ($i = 0; $i < $n; $i++) {
+            $index = rand(0, strlen($characters) - 1);
+            $randomString .= $characters[$index];
+        }
+        return $randomString;
     }
 }

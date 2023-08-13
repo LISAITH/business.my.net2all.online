@@ -40,13 +40,15 @@
 </form> #}
 
 <div class="login-box">
-  <!-- /.login-logo -->
+  <div class="login-logo">
+      <a href=""></a>
+      <a href="javascript:void(0);">Business-<b>Net2all</b></a> </br>
+      <small > <h6>votre plateforme multiservices</h6></small>
+  </div>
+  
   <div class="card card-outline card-primary">
-    {# <div class="card-header text-center">
-      <h1>Connectez-vous au Tableau de Bord</h1>
-    </div> #}
     <div class="card-body">
-      <p class="login-box-msg">Connectez-vous au Tableau de Bord</p>
+      <p class="login-box-msg">Veuillez vous connecter</p>
 
       <form  action="{{ path('login_connect') }}" method="post">
          
@@ -81,19 +83,21 @@
         </div>
         <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
         <div class="row">
-          <div class="col-8">
-            <div class="icheck-primary">
-              <input type="checkbox" id="remember">
-              <label for="remember">
-                Se rappeler de moi
-              </label>
+            <div class="col-7">
+                <div class="icheck-primary">
+                    <input type="checkbox" name="remember" id="remember">
+                    <label for="remember">
+                        Se souvernir de moi
+                    </label>
+                </div>
             </div>
-          </div>
-          <!-- /.col -->
-          <!-- /.col -->
-          <button type="submit" class="btn btn-primary btn-block">Se Connecter</button>
+            
+            <div class="col-5">
+                <button type="submit" class="btn btn-primary btn-block">Se connecter</button>
+            </div>
         </div>
       </form>
+      <br>
 
       {# <div class="social-auth-links text-center mt-2 mb-3">
         <a href="#" class="btn btn-block btn-primary">
@@ -106,12 +110,15 @@
 
       <!-- /.social-auth-links -->
 
-      <p class="mb-1">
-        <a href="#">Mot de passe oublié?</a>
-      </p>
-      <p class="mb-0">
-        <a href="{{path("app_register")}}" class="text-center">Inscrivez-vous</a>
-      </p>
+      <div class="row text-center">
+          <div class="col-3">
+              <a href="{{path("app_register")}}">S'inscrire</a>
+          </div>
+          <!-- /.col -->
+          <div class="col-9" style="text-align:right">
+              <a href="{{path('app_reset_password')}}">Mot de passe oublié ?</a>
+          </div>
+      </div>
     </div>
     <!-- /.card-body -->
   </div>

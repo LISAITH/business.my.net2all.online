@@ -70,6 +70,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     /**
      * @Groups({"user:write"})
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $reset;
+
+    /**
+     * @Groups({"user:write"})
      * @SerializedName("password")
      */
     private $plainPassword;
@@ -218,6 +224,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setPassword(string $password): self
     {
         $this->password = $password;
+
+        return $this;
+    }
+    
+    public function getReset(): string
+    {
+        return $this->reset;
+    }
+
+    public function setReset(string $reset): self
+    {
+        $this->reset = $reset;
 
         return $this;
     }
